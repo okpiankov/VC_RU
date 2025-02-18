@@ -1,0 +1,44 @@
+:root {
+  --background-color-contentLight: #81a7f9;
+  --background-color-contentLarge: #2e5efb;
+
+}
+
+* {
+  box-sizing: border-box;
+  ul {
+    list-style: none;
+  }
+  textarea,
+  input,
+  select,
+  option,
+  button {
+    font-family: "Times New Roman", Times, serif;
+    box-sizing: border-box;
+    font-size: 18px;
+  }
+  font-family: "Times New Roman", Times, serif;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  input::placeholder {
+    color: black;
+    font-size: 18px;
+  }
+  h1,h2,h3,h4,h5,h6 {
+    margin:0;
+    padding:0;
+ }
+}
+
+body {
+  margin: 0 auto;
+  /* max-width: 1700px; */
+  width: 100%;
+  height: 100%;
+  /* background-color: rgb(226, 0, 251); */
+  font-size: 18px;
+  color: black;
+}
