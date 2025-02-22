@@ -23,7 +23,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
+    email: "user@test.com",
     password: "123",
   });
 
@@ -55,18 +55,18 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
         const result = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/auth/login`,
           formData,
-          {
-            withCredentials: true,
-          }
+          // {
+          //   withCredentials: true,
+          // }
         );
         console.log(result.data);
 
-        if (result.data.role === "client") {
-          navigate("/cabinet");
-        }
-        if (result.data.role === "admin") {
-          navigate("/admin");
-        }
+        // if (result.data.role === "client") {
+        //   navigate("/cabinet");
+        // }
+        // if (result.data.role === "admin") {
+        //   navigate("/admin");
+        // }
       } catch (error) {
         console.log(error);
       } finally {

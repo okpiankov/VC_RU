@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CreatePost.scss";
 import { Plus, ChevronDown, X } from "lucide-react";
+import axios from "axios";
 
 type TypeProps = {
   setPopUpCreatePost: (popUpCreatePost: boolean) => void;
@@ -8,6 +9,31 @@ type TypeProps = {
 export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
   const [addSelect, setAddSelect] = useState(false);
   // const [addTheme, setAddTheme] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const post = {
+    authorId: "cm7evxe8w0000ppl30k750koj",
+    title:
+      "Как ростовский бизнесмен набрал миллион подписчиков за месяц без вложений и продал рекламу Сберу",
+    content:
+      "Бизнесмен вел закрытый аккаунт на протяжении 10 лет, с такими же роликами как сейчас, но для друзей. Всё его окружение просили, чтобы он его открыл.<br></br>Он сделал аккаунт публичным только в сентябре 2023 года, его видео быстро стали вирусными. За месяц-полтора набрал больше миллиона подписчиков.<br></br>Человек-антидепрессант снимает рилсы, где призывает всех улыбаться, желает хорошего дня. У него красивый, уютный голос, богатый домашний интерьер и другие атрибуты роскоши, но выглядит это так, что он не кичится этим, а это его реальный образ жизни.",
+  };
+
+  const getPosts = async () => {
+    setIsLoading(true);
+    try {
+      // const result = await axios.get("http://localhost:7777/posts");
+      const result = await axios.post(`${import.meta.env.VITE_BASE_URL}/posts`, post);
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  // useEffect(() => {
+  //   getPosts();
+  // }, []);
 
   return (
     <>
@@ -44,11 +70,11 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
         <div className="overflow_create_post">
           <h2 className="title">Заголовок</h2>
           <div className="icons">
-          {addSelect === false ? (
-          <Plus className="plus" onClick={() => setAddSelect(!addSelect)} />
-        ) : (
-          <X onClick={() => setAddSelect(!addSelect)} className="plus"  />
-        )}
+            {addSelect === false ? (
+              <Plus className="plus" onClick={() => setAddSelect(!addSelect)} />
+            ) : (
+              <X onClick={() => setAddSelect(!addSelect)} className="plus" />
+            )}
           </div>
           {/* <Plus className="plus" onClick={() => setAddSelect(!addSelect)} /> */}
           {/* <select className="select">
@@ -89,7 +115,9 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
             явно не зашел на широкую массу, а сейчас — полетели!
           </p>
         </div>
-        <button className="button_create_post">Опубликовать</button>
+        <button onClick={() => getPosts()} className="button_create_post">
+          Опубликовать
+        </button>
       </div>
     </>
   );

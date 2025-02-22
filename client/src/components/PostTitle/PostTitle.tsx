@@ -7,7 +7,7 @@ export const PostTitle = ({
   author,
   theme,
   title,
-  description,
+  content,
   images,
 }) => {
   return (
@@ -22,7 +22,7 @@ export const PostTitle = ({
 
       <div className="title">{title}</div>
       <img className="img" src={images} />
-      <div className="content">{description}</div>
+      <div className="content">{content}</div>
 
       <div className="icon_panel">
         <div>

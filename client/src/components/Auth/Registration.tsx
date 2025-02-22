@@ -30,9 +30,9 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
 
   // Определение начального состояния
   const initialState = {
-    fullName: "",
-    email: "",
-    password: "",
+    fullName: "Анатолий Вассерман",
+    email: "user@test.com",
+    password: "123",
     role: "client",
   };
 
@@ -74,9 +74,9 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
         const result = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/auth/registration`,
           formData,
-          {
-            withCredentials: true,
-          }
+          // {
+          //   withCredentials: true,
+          // }
         );
         console.log(result.data);
 
