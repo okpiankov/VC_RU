@@ -8,6 +8,10 @@
   padding-left: 130px;
   font-size: 20px;
   font-weight: 500;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
   @media (max-width: 1035px) {
     padding-left: 0;
    }

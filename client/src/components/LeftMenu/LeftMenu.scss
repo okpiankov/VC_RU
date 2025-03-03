@@ -2,12 +2,19 @@ nav {
   // background-color: var(--background-color-contentLight);
   // border: var(--background-color-contentLarge) 1px solid;
   width: 220px;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 5px;
   padding: 20px;
   font-size: 20px;
+  position: fixed;
+  left: 130px;
+  top: 60px;
+  @media (max-width: 1035px) {
+    left: 0;
+   }
+
   .navLink {
     display: flex;
     flex-direction: row;
@@ -16,6 +23,7 @@ nav {
     height: 50px;
     border-radius: 15px;
     padding-left: 7px;
+    
     &:hover, &:active {
       background-color: var(--background-color-contentLarge);
       background-color: rgb(205, 205, 205);  

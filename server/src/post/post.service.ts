@@ -11,6 +11,8 @@ export class PostService {
 
   //Получение всех постов
   //include- получаю связанного с постом автора и select - у него только поле fullName
+  //Тип : Promise<Post[]> автоматически подхватился на основе схемы призмы из @prisma/client
+  //ставлю Post[] тк хочу получать массив постов
   getPosts(): Promise<Post[]> {
     return this.prisma.post.findMany({
       include: {
@@ -20,26 +22,47 @@ export class PostService {
     // return ['post1', 'post2', 'post3'];
   }
 
+  //Получение поста по id
+  getOnePost(id: string): Promise<Post | null> {
+    return this.prisma.post.findUnique({
+      where: { id },
+      include: {
+        author: { select: { fullName: true } },
+      },
+    });
+  }
+
+  //Получение постов по теме
+  getPostsTheme(theme: string): Promise<Post[]> {
+    return this.prisma.post.findMany({
+      where: { theme },
+      include: {
+        author: { select: { fullName: true } },
+      },
+    });
+  }
+
   //Создание поста
   createPost(
-    title: string,
+    theme: string,
     content: string,
     authorId: string,
     // author: Prisma.UserCreateNestedOneWithoutPostsInput,
     // author: string,
   ) {
-    return this.prisma.post.create({ data: { title, content, authorId } });
+    return this.prisma.post.create({ data: { theme, content, authorId } });
   }
 
-  //Обновление поста
-  updatePost(id: string, title: string, content: string) {
-    return this.prisma.post.update({
-      where: { id },
-      data: { title, content },
-    });
-  }
-  //Удаление поста
-  deletePost(id: string) {
-    return this.prisma.post.delete({ where: { id } });
-  }
+  // //Удаление поста
+  // deletePost(id: string) {
+  //   return this.prisma.post.delete({ where: { id } });
+  // }
+
+  // //Обновление поста
+  // updatePost(id: string, theme: string, content: string) {
+  //   return this.prisma.post.update({
+  //     where: { id },
+  //     data: { theme, content },
+  //   });
+  // }
 }

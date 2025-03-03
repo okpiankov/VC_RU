@@ -14,10 +14,12 @@ datasource db {
 }
 
 //Схемы для таблиц
+//Если много таблиц то можно разделить на отдельные файлы
+//поля author 
 model Post {
   id String @id @default(cuid())
 
-  title    String
+  theme    String
   content  String
   author   User   @relation(fields: [authorId], references: [id])
   authorId String @map("author_id")

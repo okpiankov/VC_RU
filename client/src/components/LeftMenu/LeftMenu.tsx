@@ -18,35 +18,35 @@ export const LeftMenu = () => {
         Курсы
       </NavLink>
       <div className="themes">Темы</div>
-      <NavLink className="navLink" to="/marketing">
+      <NavLink className="navLink" to="/theme?theme=Маркетинг">
         <img src="/marketing.jpeg" />
         Маркетинг
       </NavLink>
-      <NavLink className="navLink" to="/development">
+      <NavLink className="navLink" to="/theme?theme=Разработка">
         <img src="/develop.png" />
         Разработка
       </NavLink>
-      <NavLink className="navLink" to="/ai">
+      <NavLink className="navLink" to="/theme?theme=AI">
         <img src="/AI.png" />
         AI
       </NavLink>
-      <NavLink className="navLink" to="/invest">
+      <NavLink className="navLink" to="/theme?theme=Инвестиции">
         <img src="/investment.jpeg" /> 
         Инвестиции
       </NavLink>
-      <NavLink className="navLink" to="/future">
+      <NavLink className="navLink" to="/theme?theme=Будущее">
         <img src="/future.jpeg" />
         Будущее
       </NavLink>
-      <NavLink className="navLink" to="/life">
+      <NavLink className="navLink" to="/theme?theme=Личный опыт">
         <img src="/experience.jpeg" />
         Личный опыт
       </NavLink>
-      <NavLink className="navLink" to="/travel">
+      <NavLink className="navLink" to="/theme?theme=Путешествия">
         <img src="/travelling.png" />
         Путешествия
       </NavLink>
-      <NavLink className="navLink" to="/food">
+      <NavLink className="navLink" to="/theme?theme=Еда">
         <img src="/food.png" />
         Еда
       </NavLink>

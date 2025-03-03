@@ -23,18 +23,23 @@
       }
     }
   }
-  .title {
-    font-size: 25px;
-    font-weight: 550;
+  .content {
+    // display: flex;
+    // flex-direction: column;
+    // // gap: 10px;
+    // h2, h3 {
+    //   font-weight: 550;
+    // }
+    img {
+      width: 600px;
+      height: 400px;
+      object-fit: contain;
+      // border: 1px solid black;
+      border-radius: 10px;
+      background-color: rgb(237, 237, 237);
+    }
   }
-  .img {
-    width: 600px;
-    height: 400px;
-    object-fit: contain;
-    // border: 1px solid black;
-    border-radius: 10px;
-    background-color: rgb(237, 237, 237);
-  }
+  
   .icon_panel {
     display: flex;
     flex-direction: row;

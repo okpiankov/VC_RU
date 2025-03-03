@@ -1,28 +1,39 @@
 import { NavLink } from "react-router-dom";
 import "./PostTitle.scss";
 import { MessageCircle, Glasses } from "lucide-react";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
+import { arrayTheme } from "../../pages/PostsListTheme/PostsListTheme";
 
-export const PostTitle = ({
-  id,
-  author,
-  theme,
-  title,
-  content,
-  images,
-}) => {
+export const PostTitle = ({ id, author, theme, content }) => {
+  
+  //Парсинг HTML с тегами в React html-react-parser и безопасность от атак (XSS) dompurify
+  const dirtyHTML = content;
+  const cleanHTML = DOMPurify.sanitize(dirtyHTML, {
+    USE_PROFILES: { html: true },
+  });
+
+  const objectTheme = arrayTheme.find(
+      (item) => item.name === theme);
+    // console.log("objectTheme", objectTheme);
+
   return (
-    <NavLink className="post_title" to={`/post/${id}`}>
+    <NavLink className="post_title" to={`/${id}`}>
       <div className="author">
         <b className="name">{author}</b>
         <div className="theme">
-          <img className="icon" src={theme.icon} />
-          {theme.name}
+          <img className="icon" src={objectTheme?.icon} />
+          {theme}
         </div>
       </div>
 
-      <div className="title">{title}</div>
-      <img className="img" src={images} />
-      <div className="content">{content}</div>
+      {/* опасный метод парсинга html с тегами
+      <div
+        className="content"
+        dangerouslySetInnerHTML={{ __html: content }}
+      ></div> */}
+
+      <div className="content">{parse(cleanHTML.substring(0,500)+"...")}</div>
 
       <div className="icon_panel">
         <div>

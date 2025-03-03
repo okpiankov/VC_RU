@@ -7,14 +7,16 @@
     display: flex;
     flex-direction: row;
     justify-content: start;
-    padding-left: 130px;
+    padding-left: 380px;
+    // padding-left: 130px;
     gap: 30px;
     height: 100%;
     width: 100%;
     background-color: rgb(237, 237, 237);
     @media (max-width: 1035px) {
-      padding-left: 0;
+      padding-left: 220px;
       gap: 0;
+      
      }
     section {
       display: flex;

@@ -6,9 +6,18 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  Req,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PostService } from './post.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import * as fs from 'node:fs';
+import { Express } from 'express';
+import { Request } from 'express';
 
 //Контроллеры - только обрабатывают HTPP запросы и возвращают ответы и вызывает сервис
 //Те принимает данные и отдает данные или ошибку клиенту
@@ -28,31 +37,79 @@ import { PostService } from './post.service';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  //Сохранение картинок для постов в папку uploads
+  //Ключ 'image' должен совпадать с ключем на клиенте
+  @Post('uploads')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: (_, __, cb) => {
+          if (!fs.existsSync('uploads')) {
+            fs.mkdirSync('uploads');
+          }
+          cb(null, 'uploads');
+        },
+        filename: (_, file, cb) => {
+          cb(null, file.originalname);
+        },
+      }),
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+    return { url: `http://localhost:7777/uploads/${file.originalname}` };
+  }
+
+  //Чтобы заработало - нужно расположить перед получением всех постов (т.е. getPosts())!!!
+  //Получение постов по темам
+  @Get()
+  getPostsTheme(@Query('theme') theme: string, @Req() request: Request) {
+    console.log('controller', theme, request.query);
+    return this.postService.getPostsTheme(theme);
+  }
+
+  //Получение всех постов
   @Get()
   getPosts() {
     return this.postService.getPosts();
   }
+
+  //Получение конкретного поста
+  //Обязательно передаю ':id' в @Get если хочу получать данные по конкретному посту через id поста
+  @Get(':id')
+  getOnePost(@Param('id') id: string) {
+    // console.log('controller', id);
+    return this.postService.getOnePost(id);
+  }
+
+  //Создание поста
   @Post()
   createPost(
-    @Body('title') title: string,
+    @Body() body: any,
+    @Body('theme') theme: string,
     @Body('content') content: string,
     @Body('authorId') authorId: string,
     // @Body('author') author: Prisma.UserCreateNestedOneWithoutPostsInput,
   ) {
-    return this.postService.createPost(title, content, authorId);
+    console.log('controller', body);
+    return this.postService.createPost(theme, content, authorId);
   }
-  @Put('update/:id')
-  updatePost(
-    @Body('title') title: string,
-    @Body('content') content: string,
-    @Param('id') id: string,
-  ) {
-    return this.postService.updatePost(id, title, content);
-  }
-  @Delete('delete/:id')
-  deletePost(@Param('id') id: string) {
-    return this.postService.deletePost(id);
-  }
+
+  ////Удаление поста
+  // @Delete('delete/:id')
+  // deletePost(@Param('id') id: string) {
+  //   return this.postService.deletePost(id);
+  // }
+
+  ////Обновление поста
+  // @Put('update/:id')
+  // updatePost(
+  //   @Body('theme') theme: string,
+  //   @Body('content') content: string,
+  //   @Param('id') id: string,
+  // ) {
+  //   return this.postService.updatePost(id, theme, content);
+  // }
 }
 
 // type PostCreateInput = {
