@@ -1,31 +1,67 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./Comments.scss";
 import axios from "axios";
+import dayjs from "dayjs";
 
-export const Comments = () => {
-  const comments = [
-    {
-      id: "1",
-      $createdAt: "28-01-2025",
-      text: "Секрет, видимо, в уникальном подходе к подаче и правильной вовлечённости.",
-      author: "Опытный юзер",
-    },
-    {
-      id: "2",
-      $createdAt: "28-01-2025",
-      text: "И ещё попал в запрос нынешнего времени)",
-      author: "Анатолий Вассерман",
-    },
-  ];
-  const [isLoading, setIsLoading] = useState(false);
+type TypePostId = {
+  postId: string;
+};
+
+export const Comments = ({ postId }: TypePostId) => {
   type TypeCommentSend = {
     text: string;
-    author: string;
+    // authorId: string;
+    // postId: string;
   };
+  type TypeCommentGet = {
+    text: string;
+    author: {
+      fullName: string;
+    };
+    authorId: string;
+    postId: string;
+    createdAt: string;
+    id: string;
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [comments, setComments] = useState<TypeCommentGet[] | []>([]);
+
+  //Получение нового комментария сразу после создания:
+  const [newComment, setNewComment] = useState<TypeCommentGet>({
+    text: "",
+    author: {
+      fullName: "",
+    },
+    authorId: "",
+    postId: "",
+    createdAt: "",
+    id: "",
+  });
+
+  //Получение всех комментариев
+  const getPosts = async (postId: string) => {
+    setIsLoading(true);
+    try {
+      // const result = await axios.get("http://localhost:7777/posts");
+      const result = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/comments/${postId}`
+      );
+      console.log("comments", result.data);
+      setComments(result.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    getPosts(postId);
+  }, [newComment, postId]);
+
   //initialState для отправки формы комментария
   const initialState = {
     text: "",
-    author: "Анатолий Вассерман",
   };
 
   const [formData, setFormData] = useState<TypeCommentSend>({
@@ -46,18 +82,19 @@ export const Comments = () => {
     }));
   };
 
+  //Создание комментария
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    //Создание комментария
     const createComment = async () => {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/comment/create`,
-          formData
+          `${import.meta.env.VITE_BASE_URL}/comments`,
+          { ...formData, authorId: "cm7evxe8w0000ppl30k750koj", postId: postId }
         );
-        // console.log(response);
+        console.log(response.data);
+        setNewComment(response.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -71,8 +108,8 @@ export const Comments = () => {
   return (
     <>
       <div className="commentsBox">
-        <div>Количество комментариев 100</div>
-        <form onSubmit={handleSubmit} noValidate > 
+        <div>Количество комментариев {comments?.length}</div>
+        <form onSubmit={handleSubmit} noValidate>
           <textarea
             onChange={handleChange}
             value={formData.text}
@@ -89,15 +126,48 @@ export const Comments = () => {
           comments?.map((comment) => (
             <div key={comment.id} className="comment">
               <div className="comment_title">
-                <div className="comment_author">{comment.author}</div>
-                <div>Комментарий: {comment.$createdAt}</div>
+                <div className="comment_author">{comment.author.fullName}</div>
+                <div>
+                  Комментарий:
+                  {dayjs(comment.createdAt).format("H:m /DD MMMM YYYY")}
+                </div>
               </div>
               {comment.text}
             </div>
           ))}
         {/* Получение нового комментария сразу после создания: */}
-        
+        {newComment.text !== "" ||
+          newComment.createdAt !== "" ||
+          (newComment.author.fullName !== "" && (
+            <div className="comment">
+              <div className="comment_title">
+                <div className="comment_author">
+                  {newComment.author.fullName}
+                </div>
+                <div>
+                  Комментарий:
+                  {dayjs(newComment.createdAt).format("H:m /DD MMMM YYYY")}
+                </div>
+              </div>
+              {newComment.text}
+            </div>
+          ))}
       </div>
     </>
   );
 };
+
+// const arrayComments = [
+//   {
+//     id: "1",
+//     $createdAt: "28-01-2025",
+//     text: "Секрет, видимо, в уникальном подходе к подаче и правильной вовлечённости.",
+//     author: "Опытный юзер",
+//   },
+//   {
+//     id: "2",
+//     $createdAt: "28-01-2025",
+//     text: "И ещё попал в запрос нынешнего времени)",
+//     author: "Анатолий Вассерман",
+//   },
+// ];

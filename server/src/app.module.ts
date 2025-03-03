@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CommentModule } from './comment/comment.module';
 
 //Модули группируют связанные элементы, это корневая история
 //В рутовый модуль ипортируются дочерние модули
@@ -24,6 +25,7 @@ import { join } from 'path';
     ConfigModule.forRoot({ isGlobal: true }),
     PostModule,
     UserModule,
+    CommentModule,
   ],
   //controllers: [AppController],
   //providers: [AppService],

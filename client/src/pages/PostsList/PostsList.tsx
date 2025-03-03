@@ -3,16 +3,26 @@ import { PostTitle } from "../../components/PostTitle/PostTitle";
 import "./PostsList.scss";
 import axios from "axios";
 
+type TypePostsList = {
+  id: string;
+  author: {
+    fullName: string;
+  };
+  authorId: string;
+  content: string;
+  theme: string;
+};
+
 export const PostsList = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<TypePostsList[] | []>([]);
 
   const getPosts = async () => {
     setIsLoading(true);
     try {
       // const result = await axios.get("http://localhost:7777/posts");
       const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts`);
-      console.log(result.data);
+      console.log("PostsList", result.data);
       setPosts(result.data);
     } catch (error) {
       console.log(error);

@@ -8,24 +8,43 @@ import parse from "html-react-parser";
 import { useParams } from "react-router-dom";
 import { arrayTheme } from "../PostsListTheme/PostsListTheme";
 
+type TypePostContent = {
+  id: string;
+  author: {
+    fullName: string;
+  };
+  authorId: string;
+  content: string;
+  theme: string;
+};
+
 export const PostContent = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState<TypePostContent>({
+    id: "",
+    author: {
+      fullName: "",
+    },
+    authorId: "",
+    content: "",
+    theme: "",
+  });
+
   //Парсинг HTML с тегами в React html-react-parser и безопасность от атак (XSS) dompurify
   const dirtyHTML = post.content;
   const cleanHTML = DOMPurify.sanitize(dirtyHTML, {
     USE_PROFILES: { html: true },
   });
 
-  const getPost = async (id) => {
+  const getPost = async (id: string | undefined) => {
     setIsLoading(true);
     try {
       // const result = await axios.get("http://localhost:7777/posts");
       const result = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/posts/${id}`
       );
-      console.log(result.data);
+      console.log("postId", result.data);
       setPost(result.data);
     } catch (error) {
       console.log(error);
@@ -70,7 +89,7 @@ export const PostContent = () => {
 
       {/* <div className="comments">
     </div> */}
-      <Comments />
+      <Comments postId={post?.id} />
     </div>
   );
 };

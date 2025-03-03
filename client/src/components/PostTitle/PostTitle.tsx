@@ -5,7 +5,14 @@ import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import { arrayTheme } from "../../pages/PostsListTheme/PostsListTheme";
 
-export const PostTitle = ({ id, author, theme, content }) => {
+type TypePostTitle = {
+  id: string;
+  author: string;
+  theme: string;
+  content: string;
+};
+
+export const PostTitle = ({ id, author, theme, content }: TypePostTitle) => {
   
   //Парсинг HTML с тегами в React html-react-parser и безопасность от атак (XSS) dompurify
   const dirtyHTML = content;

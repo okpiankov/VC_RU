@@ -23,11 +23,22 @@ export class PostService {
   }
 
   //Получение поста по id
+  //Можно получить все связанные с постом комментарии со всеми полями и авторством
   getOnePost(id: string): Promise<Post | null> {
     return this.prisma.post.findUnique({
       where: { id },
       include: {
         author: { select: { fullName: true } },
+        // comments: {
+        //   include: {
+        //     author: { select: { fullName: true } },
+        //   },
+        // },
+        // comments: {
+        //   select: {
+        //     id: true,
+        //   },
+        // },
       },
     });
   }

@@ -4,7 +4,8 @@ import "./PostsListTheme.scss";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
- export const arrayTheme = [
+// eslint-disable-next-line react-refresh/only-export-components
+export const arrayTheme = [
   {
     id: 1,
     name: "Маркетинг",
@@ -77,22 +78,32 @@ import { useSearchParams } from "react-router-dom";
   },
 ];
 
+type TypePostsListTheme = {
+  id: string;
+  author: {
+    fullName: string;
+  };
+  authorId: string;
+  content: string;
+  theme: string;
+};
 export const PostsListTheme = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<TypePostsListTheme[] | []>([]);
 
   const [search] = useSearchParams();
 
   useEffect(() => {
     const theme = search.get("theme");
-    console.log("theme", theme);
+    // console.log("theme", theme);
+
     const getPostsTheme = async () => {
       setIsLoading(true);
       try {
         const result = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/posts?theme=${theme}`
         );
-        console.log(result.data);
+        console.log("postsListTheme", result.data);
         setPosts(result.data);
       } catch (error) {
         console.log(error);
@@ -138,38 +149,37 @@ export const PostsListTheme = () => {
   );
 };
 
+// return (
+//   <div className="posts_list">
+//     {/* <div className="post_theme">
+//       <div  className={` ${posts[0].theme.name === "Маркетинг" ? 'color1' : posts[0].theme.name === "Личный опыт" ? 'color2': ''}`}></div>
 
-  // return (
-  //   <div className="posts_list">
-  //     {/* <div className="post_theme">
-  //       <div  className={` ${posts[0].theme.name === "Маркетинг" ? 'color1' : posts[0].theme.name === "Личный опыт" ? 'color2': ''}`}></div>
+//       <div className="theme">
+//         <img className="icon" src={posts[0].theme.icon} />
+//         <div className="name">{posts[0].theme.name}</div>
+//         <div className="title">{posts[0].theme.content}</div>
+//       </div>
+//     </div> */}
 
-  //       <div className="theme">
-  //         <img className="icon" src={posts[0].theme.icon} />
-  //         <div className="name">{posts[0].theme.name}</div>
-  //         <div className="title">{posts[0].theme.content}</div>
-  //       </div>
-  //     </div> */}
-
-  //     {/* {posts.map((item) => (
-  //       <PostTitle
-  //         key={item.id}
-  //         id={item.id}
-  //         author={item.author}
-  //         title={item.title}
-  //         content={item.content}
-  //         images={item.images}
-  //         theme={item.theme}
-  //       />
-  //     ))} */}
-  //     {/* {posts.map((item) => (
-  //       <PostTitle
-  //         key={item.id}
-  //         id={item.id}
-  //         theme={item.theme}
-  //         author={item.author.fullName}
-  //         content={item.content}
-  //       />
-  //     ))} */}
-  //   </div>
-  // );
+//     {/* {posts.map((item) => (
+//       <PostTitle
+//         key={item.id}
+//         id={item.id}
+//         author={item.author}
+//         title={item.title}
+//         content={item.content}
+//         images={item.images}
+//         theme={item.theme}
+//       />
+//     ))} */}
+//     {/* {posts.map((item) => (
+//       <PostTitle
+//         key={item.id}
+//         id={item.id}
+//         theme={item.theme}
+//         author={item.author.fullName}
+//         content={item.content}
+//       />
+//     ))} */}
+//   </div>
+// );

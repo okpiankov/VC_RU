@@ -3,7 +3,9 @@
 //.env файл автоматически создается в нем ссылка на БД postgresql DATABASE_URL 
 //Команды для добавления схем npx prisma db push    npx prisma generate 
 //Далее все изменения в схемах делать только через миграции пример:
-//npx prisma migrate dev --name add_password_role_to_user  название миграции add_password_role_to_user  
+//npx prisma migrate dev --name add_password_role_to_user  название миграции add_password_role_to_user
+//npx prisma generate - после создания миграции делать чтобы синронизировать изменения схемы модели с БД
+//nest g res название --no-spec  cоздание сразу папки с модулем контролером и сервесом
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,21 +17,7 @@ datasource db {
 
 //Схемы для таблиц
 //Если много таблиц то можно разделить на отдельные файлы
-//поля author 
-model Post {
-  id String @id @default(cuid())
-
-  theme    String
-  content  String
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String @map("author_id")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  //Изменяю название на "posts" таблицы в БД 
-  @@map("posts") 
-}
-
+//Связей posts    Post[] comments Comment[]... не видно в БД через pgAdmin и в приходящем ответе с сервера 
 model User {
   id String @id @default(cuid())
 
@@ -38,9 +26,41 @@ model User {
   password String
   role     String
   posts    Post[]
+  comments Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("users")
+}
+
+model Post {
+  id String @id @default(cuid())
+
+  theme    String
+  content  String
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @map("author_id")
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //Изменяю название на "posts" таблицы в БД 
+  @@map("posts") 
+}
+
+model Comment {
+  id String @id @default(cuid())
+
+  text  String
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @map("author_id")
+
+  post     Post   @relation(fields: [postId], references: [id])
+  postId   String @map("post_id")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //Изменяю название на "comments" таблицы в БД 
+  @@map("comments") 
 }
