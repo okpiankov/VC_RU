@@ -30,7 +30,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
 
   // Определение начального состояния
   const initialState = {
-    fullName: "Анатолий Вассерман",
+    fullName: "Олег",
     email: "user@test.com",
     password: "123",
     role: "client",
@@ -49,6 +49,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    console.log(event.target.value);
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -84,7 +85,9 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
       } catch (error) {
         console.log(error);
       } finally {
+        resetForm()
         setIsLoading(false);
+        console.log('cookies',document.cookie);
       }
     };
 
@@ -113,7 +116,8 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
           value={formData.email}
           name="email"
           onChange={handleChange}
-          placeholder="Почта ваш логин*"
+          // placeholder="Почта ваш логин*"
+          placeholder="user@test.com"
         />
 
         <div className="nameError">{passwordError}</div>
@@ -125,7 +129,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
           placeholder="Придумайте пароль*"
         />
 
-        <button type="submit" className="button" onClick={() => resetForm()}>
+        <button type="submit" className="button">
           Зарегистрироваться
         </button>
       </form>

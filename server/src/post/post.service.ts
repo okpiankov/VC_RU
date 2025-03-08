@@ -17,6 +17,11 @@ export class PostService {
     return this.prisma.post.findMany({
       include: {
         author: { select: { fullName: true } },
+        comments: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     // return ['post1', 'post2', 'post3'];

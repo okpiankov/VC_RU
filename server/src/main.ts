@@ -1,11 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
+// import { ValidationPipe } from '@nestjs/common';
+// import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // await app.listen(process.env.PORT ?? 7777);
-  app.enableCors();
+  app.use(cookieParser());
+  // app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({ origin: true, credentials: true });
   await app.listen(7777);
+  // await app.listen(process.env.PORT ?? 7777);
 }
 void bootstrap();
 //В корневом файле настроивается cors и cookies можно глобальный путь указать:
@@ -20,3 +25,7 @@ void bootstrap();
 //Удобная фишка что запрос=ответу,какие конкретно укажу поля в запросе только те и придут с сервера
 //За счет этого и размер запроса сокращается и грузится быстрее. GraphQL playground -удобный интерфейс
 //Apollo для GraphQL - аналог React Query только для graphql с лучшим кешированием
+
+// useContainer(app.select(AppModule), {
+//   fallbackOnErrors: true,
+// });

@@ -9,6 +9,7 @@ import {
   Query,
   Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
@@ -18,6 +19,7 @@ import { diskStorage } from 'multer';
 import * as fs from 'node:fs';
 import { Express } from 'express';
 import { Request } from 'express';
+import { JwtUserGuard } from 'src/user/jwt-user.guard';
 
 //Контроллеры - только обрабатывают HTPP запросы и возвращают ответы и вызывает сервис
 //Те принимает данные и отдает данные или ошибку клиенту
@@ -76,6 +78,7 @@ export class PostController {
 
   //Получение конкретного поста
   //Обязательно передаю ':id' в @Get если хочу получать данные по конкретному посту через id поста
+  // @UseGuards(JwtUserGuard)
   @Get(':id')
   getOnePost(@Param('id') id: string) {
     // console.log('controller', id);
@@ -83,6 +86,7 @@ export class PostController {
   }
 
   //Создание поста
+  //@UseGuards(JwtUserGuard) - пример использования защитника для эндпоинта
   @Post()
   createPost(
     @Body() body: any,

@@ -1,6 +1,9 @@
+import { Exclude } from 'class-transformer';
 import { IsString } from 'class-validator';
 
-//Валидация DTO - Data Transfer Object - те проверка приходящего объекта
+//ОШИБКА для каждого запроса -свой класс DTO, для авторизации  CreateUserDto не пойдет!
+//Валидация через класс DTO - Data Transfer Object - те проверка приходящего объекта
+//Регистрация
 export class CreateUserDto {
   @IsString({
     message: 'Имя не строка!',
@@ -15,4 +18,14 @@ export class CreateUserDto {
 
   @IsString()
   role: string;
+}
+//Авторизация
+export class AuthUserDto {
+  @IsString()
+  email: string;
+
+  // @IsString()
+  // password: string;
+  @Exclude()
+  password: string;
 }

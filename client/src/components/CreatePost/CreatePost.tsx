@@ -6,6 +6,9 @@ import axios from "axios";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageUploader  from "quill-image-uploader";
+import { useSelector } from "react-redux";
+import { getUser } from "../../store/user/slice";
+import { useNavigate } from "react-router-dom";
 
 type TypeProps = {
   setPopUpCreatePost: (popUpCreatePost: boolean) => void;
@@ -76,6 +79,8 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [addTheme, setAddTheme] = useState("Без темы");
   console.log(addTheme);
+  const user = useSelector(getUser);
+  const navigate = useNavigate();
 
   //Контент для отправки на сервер(данные+теги) хранится как единая длинная строка
   //Каждое добавление картинки на сервер - в ответ приходит ссылка и добавляется в контент:
@@ -90,7 +95,7 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
       const result = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/posts`,
         {
-          authorId: "cm7evxe8w0000ppl30k750koj",
+          authorId: user.id,
           theme: addTheme,
           content: content,
         }
@@ -100,6 +105,7 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
       console.log(error);
     } finally {
       setIsLoading(false);
+      navigate("/");
     }
   };
 
@@ -111,7 +117,7 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
       ></div>
       <div className="container_create_post show2">
         <X className="close" onClick={() => setPopUpCreatePost(false)} />
-        <div className="author">Анатолий Вассерман</div>
+        <div className="author">{user.fullName}</div>
 
         <select
           value={addTheme}
@@ -146,7 +152,7 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
           {/* <div>{content}</div> */}
           {/* <div dangerouslySetInnerHTML={{ __html: content }}></div> */}
         </div>
-        <button onClick={() => createPosts()} className="button_create_post">
+        <button onClick={() => {createPosts(); setPopUpCreatePost(false)}} className="button_create_post">
           Опубликовать
         </button>
         {/* <button className="button_create_post">Опубликовать</button> */}

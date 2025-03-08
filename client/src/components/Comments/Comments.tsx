@@ -2,6 +2,8 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./Comments.scss";
 import axios from "axios";
 import dayjs from "dayjs";
+import { getUser } from "../../store/user/slice";
+import { useSelector } from "react-redux";
 
 type TypePostId = {
   postId: string;
@@ -26,6 +28,7 @@ export const Comments = ({ postId }: TypePostId) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [comments, setComments] = useState<TypeCommentGet[] | []>([]);
+  const user = useSelector(getUser);
 
   //Получение нового комментария сразу после создания:
   const [newComment, setNewComment] = useState<TypeCommentGet>({
@@ -91,7 +94,7 @@ export const Comments = ({ postId }: TypePostId) => {
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/comments`,
-          { ...formData, authorId: "cm7evxe8w0000ppl30k750koj", postId: postId }
+          { ...formData, authorId: user.id, postId: postId }
         );
         console.log(response.data);
         setNewComment(response.data);

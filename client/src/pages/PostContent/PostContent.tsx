@@ -7,6 +7,7 @@ import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import { useParams } from "react-router-dom";
 import { arrayTheme } from "../PostsListTheme/PostsListTheme";
+import { Skeleton2 } from "../../components/Skeleton/Skeleton";
 
 type TypePostContent = {
   id: string;
@@ -42,7 +43,10 @@ export const PostContent = () => {
     try {
       // const result = await axios.get("http://localhost:7777/posts");
       const result = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/posts/${id}`
+        `${import.meta.env.VITE_BASE_URL}/posts/${id}`,
+        {
+          withCredentials: true,
+        }
       );
       console.log("postId", result.data);
       setPost(result.data);
@@ -61,6 +65,7 @@ export const PostContent = () => {
 
   return (
     <div className="post">
+      {isLoading ? <Skeleton2 /> : ""}
       <div className="post_content">
         {/* <div className="name">{post.author}</div> */}
 

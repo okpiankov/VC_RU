@@ -1,0 +1,29 @@
+.container_main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  .container_inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    padding-left: 380px;
+    // padding-left: 130px;
+    gap: 30px;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(237, 237, 237);
+    @media (max-width: 1035px) {
+      padding-left: 220px;
+      gap: 0;
+      
+     }
+    section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;  
+      height: 100%;
+      width: 640px;
+    }
+  }
+}

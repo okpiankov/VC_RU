@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PostTitle } from "../../components/PostTitle/PostTitle";
 import "./PostsList.scss";
 import axios from "axios";
+import { Skeleton1 } from "../../components/Skeleton/Skeleton";
 
 type TypePostsList = {
   id: string;
@@ -36,6 +37,7 @@ export const PostsList = () => {
 
   return (
     <div className="posts_list">
+      {isLoading ? <Skeleton1 /> : ""}
       {posts.map((item) => (
         <PostTitle
           key={item.id}

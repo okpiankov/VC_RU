@@ -3,22 +3,23 @@ import "./Auth.scss";
 import { validateEmail, validatePassword } from "./validate";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { userActions } from "../../store/user/slice";
 
 type TypeProps = {
   setPopUpLogin: (popUpLogin: boolean) => void;
   setAuth: (auth: boolean) => void;
 };
-// type User = {
-//   data: {
-//     fullName: string | null;
-//     email: string | null;
-//     id: number | null;
-//     role: string | null;
-//   };
-// };
+type Error = {
+  response: { data: { message: string } };
+};
 
 export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error>({
+    response: { data: { message: "" } },
+  });
 
   const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
       ...prevState,
       [name]: value,
     }));
-
+    //Валидация:
     if (name === "email" && value !== " ") {
       validateEmail({ value: value, setEmailError: setEmailError });
     }
@@ -55,11 +56,12 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
         const result = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/auth/login`,
           formData,
-          // {
-          //   withCredentials: true,
-          // }
+          {
+            withCredentials: true,
+          }
         );
         console.log(result.data);
+        dispatch(userActions.setUser(result.data));
 
         // if (result.data.role === "client") {
         //   navigate("/cabinet");
@@ -67,10 +69,13 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
         // if (result.data.role === "admin") {
         //   navigate("/admin");
         // }
-      } catch (error) {
+      } catch (error: Error | unknown) {
         console.log(error);
+        setError(error as Error);
       } finally {
         setIsLoading(false);
+        console.log("cookies", document.cookie);
+        // !error && setPopUpLogin(false);
       }
     };
 
@@ -80,7 +85,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
   return (
     <>
       <div className="overlay_auth" onClick={() => setPopUpLogin(false)}></div>
-
+      {error && <div className="reg">{error.response.data.message}</div>}
       {isLoading === true && <div className="loading">Загрузка...</div>}
 
       <form onSubmit={handleSubmit} className="form showTop">
@@ -101,8 +106,10 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
           placeholder="Пароль: 123"
         />
 
-        <button type="submit" className="button" >Войти</button>
-        <div onClick={()=> setAuth(false)}>Регистрация</div>
+        <button type="submit" className="button">
+          Войти
+        </button>
+        <div onClick={() => setAuth(false)}>Регистрация</div>
       </form>
     </>
   );

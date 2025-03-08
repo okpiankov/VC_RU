@@ -3,6 +3,7 @@ import { PostTitle } from "../../components/PostTitle/PostTitle";
 import "./PostsListTheme.scss";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
+import { Skeleton2 } from "../../components/Skeleton/Skeleton";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const arrayTheme = [
@@ -131,7 +132,7 @@ export const PostsListTheme = () => {
           <div className="title">{objectTheme?.description}</div>
         </div>
       </div>
-
+      {isLoading ? <Skeleton2 /> : ''}
       {posts && posts.length > 0 ? (
         posts.map((item) => (
           <PostTitle
