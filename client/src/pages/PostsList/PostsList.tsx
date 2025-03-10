@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { PostTitle } from "../../components/PostTitle/PostTitle";
 import "./PostsList.scss";
 import axios from "axios";
 import { Skeleton1 } from "../../components/Skeleton/Skeleton";
+import { useQuery } from "@tanstack/react-query";
 
 type TypePostsList = {
   id: string;
@@ -12,44 +13,110 @@ type TypePostsList = {
   authorId: string;
   content: string;
   theme: string;
+  comments: string[];
 };
 
 export const PostsList = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [posts, setPosts] = useState<TypePostsList[] | []>([]);
-
   const getPosts = async () => {
-    setIsLoading(true);
-    try {
-      // const result = await axios.get("http://localhost:7777/posts");
-      const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts`);
-      console.log("PostsList", result.data);
-      setPosts(result.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    const result = await axios.get<TypePostsList[]>(
+      `${import.meta.env.VITE_BASE_URL}/posts`
+    );
+    return result.data;
   };
-  useEffect(() => {
-    getPosts();
-  }, []);
+  //Те useState useEffect try catch finally не нужны, как протипизировать data, почему 4 рендера как уменьшить?
+  //Получение всех постов
+  //useQuery() для получения данных, useMutation() для обновленния данных
+  //данные из useQuery получаются только через "data"
+  //Запрос прописывается в queryFn через async, типы передаются так axios.get<TypePostsList[]>()
+  const { data, error, isLoading, isSuccess } = useQuery({
+    //по этому ключу будут храниться в кэше данные
+    queryKey: ["posts"],
+    queryFn: getPosts,
 
+    //можно как-то преобразовывать данные
+    //select: (data) => data.map...
+    //Запрос зависит от условия можно сделать если только isAuth true
+    //enabled: isAuth,
+    //Запрос будет повторяться каждые 1000 мс
+    // staleTime: 1000,
+    //Начальное состояние
+    initialData: [
+      {
+        id: "1",
+        author: {
+          fullName: "noName",
+        },
+        authorId: "2",
+        content:
+          "<h2>Привет от tanstack/react-query. Что-то пошло не так... </h2>",
+        theme: "Без темы",
+        comments: [],
+      },
+    ],
+  });
+  console.log(
+    "PostsList:",
+    data,
+    "error:",
+    error,
+    "isLoading:",
+    isLoading,
+    "isSuccess:",
+    isSuccess
+  );
   return (
     <div className="posts_list">
       {isLoading ? <Skeleton1 /> : ""}
-      {posts.map((item) => (
+      {data?.map((item) => (
         <PostTitle
           key={item.id}
           id={item.id}
           theme={item.theme}
           author={item.author.fullName}
           content={item.content}
+          comments={item.comments.length}
         />
       ))}
     </div>
   );
 };
+
+//Без tanstack/react-query
+// const [isLoading, setIsLoading] = useState(false);
+// const [posts, setPosts] = useState<TypePostsList[] | []>([]);
+//
+// const getPosts = async () => {
+//   setIsLoading(true);
+//   try {
+//     // const result = await axios.get("http://localhost:7777/posts");
+//     const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/posts`);
+//     console.log("PostsList", result.data);
+//     setPosts(result.data);
+//   } catch (error) {
+//     console.log(error);
+//   } finally {
+//     setIsLoading(false);
+//   }
+// };
+// useEffect(() => {
+//   getPosts();
+// }, []);
+
+// return (
+//   <div className="posts_list">
+//     {isLoading ? <Skeleton1 /> : ""}
+//     {posts.map((item) => (
+//       <PostTitle
+//         key={item.id}
+//         id={item.id}
+//         theme={item.theme}
+//         author={item.author.fullName}
+//         content={item.content}
+//       />
+//     ))}
+//   </div>
+// );
+// };
 
 // const posts = [
 //   {

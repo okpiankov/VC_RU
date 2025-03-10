@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { PostTitle } from "../../components/PostTitle/PostTitle";
 import "./PostsListTheme.scss";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { Skeleton2 } from "../../components/Skeleton/Skeleton";
+import { useQuery } from "@tanstack/react-query";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const arrayTheme = [
@@ -87,34 +88,23 @@ type TypePostsListTheme = {
   authorId: string;
   content: string;
   theme: string;
+  comments: string[];
 };
 export const PostsListTheme = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [posts, setPosts] = useState<TypePostsListTheme[] | []>([]);
-
   const [search] = useSearchParams();
+  const theme = search.get("theme");
 
-  useEffect(() => {
-    const theme = search.get("theme");
-    // console.log("theme", theme);
-
-    const getPostsTheme = async () => {
-      setIsLoading(true);
-      try {
-        const result = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/posts?theme=${theme}`
-        );
-        console.log("postsListTheme", result.data);
-        setPosts(result.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getPostsTheme();
-  }, [search]);
+  const getPostsTheme = async (theme: string | null) => {
+    const result = await axios.get<TypePostsListTheme[]>(
+      `${import.meta.env.VITE_BASE_URL}/posts?theme=${theme}`
+    );
+    return result.data;
+  };
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["postsTheme", theme],
+    queryFn: () => getPostsTheme(theme),
+  });
+  console.log("PostsListTheme:", data, "error:", error);
 
   const objectTheme = arrayTheme.find(
     (item) => item.name === search.get("theme")
@@ -132,15 +122,16 @@ export const PostsListTheme = () => {
           <div className="title">{objectTheme?.description}</div>
         </div>
       </div>
-      {isLoading ? <Skeleton2 /> : ''}
-      {posts && posts.length > 0 ? (
-        posts.map((item) => (
+      {isLoading ? <Skeleton2 /> : ""}
+      {data && data.length > 0 ? (
+        data.map((item) => (
           <PostTitle
             key={item.id}
             id={item.id}
             theme={item.theme}
             author={item.author.fullName}
             content={item.content}
+            comments={item.comments.length}
           />
         ))
       ) : (
@@ -149,6 +140,34 @@ export const PostsListTheme = () => {
     </div>
   );
 };
+
+//Без tanstack/react-query
+// const [isLoading, setIsLoading] = useState(false);
+// const [posts, setPosts] = useState<TypePostsListTheme[] | []>([]);
+
+// const [search] = useSearchParams();
+
+// useEffect(() => {
+//   const theme = search.get("theme");
+//   // console.log("theme", theme);
+
+//   const getPostsTheme = async () => {
+//     setIsLoading(true);
+//     try {
+//       const result = await axios.get(
+//         `${import.meta.env.VITE_BASE_URL}/posts?theme=${theme}`
+//       );
+//       console.log("postsListTheme", result.data);
+//       setPosts(result.data);
+//     } catch (error) {
+//       console.log(error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   getPostsTheme();
+// }, [search]);
 
 // return (
 //   <div className="posts_list">

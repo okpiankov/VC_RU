@@ -12,19 +12,27 @@ export class PostService {
   //Получение всех постов
   //include- получаю связанного с постом автора и select - у него только поле fullName
   //Тип : Promise<Post[]> автоматически подхватился на основе схемы призмы из @prisma/client
-  //ставлю Post[] тк хочу получать массив постов
+  // //ставлю Post[] тк хочу получать массив постов
   getPosts(): Promise<Post[]> {
     return this.prisma.post.findMany({
       include: {
         author: { select: { fullName: true } },
-        comments: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     // return ['post1', 'post2', 'post3'];
+  }
+
+  //Получение постов по теме
+  getPostsTheme(theme: string): Promise<Post[]> {
+    return this.prisma.post.findMany({
+      where: { theme },
+      include: {
+        author: { select: { fullName: true } },
+        comments: {
+          select: { id: true },
+        },
+      },
+    });
   }
 
   //Получение поста по id
@@ -34,26 +42,11 @@ export class PostService {
       where: { id },
       include: {
         author: { select: { fullName: true } },
-        // comments: {
-        //   include: {
-        //     author: { select: { fullName: true } },
-        //   },
-        // },
-        // comments: {
-        //   select: {
-        //     id: true,
-        //   },
-        // },
-      },
-    });
-  }
-
-  //Получение постов по теме
-  getPostsTheme(theme: string): Promise<Post[]> {
-    return this.prisma.post.findMany({
-      where: { theme },
-      include: {
-        author: { select: { fullName: true } },
+        comments: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }

@@ -10,9 +10,10 @@ type TypePostTitle = {
   author: string;
   theme: string;
   content: string;
+  comments: number;
 };
 
-export const PostTitle = ({ id, author, theme, content }: TypePostTitle) => {
+export const PostTitle = ({ id, author, theme, content, comments }: TypePostTitle) => {
   
   //Парсинг HTML с тегами в React html-react-parser и безопасность от атак (XSS) dompurify
   const dirtyHTML = content;
@@ -44,7 +45,7 @@ export const PostTitle = ({ id, author, theme, content }: TypePostTitle) => {
 
       <div className="icon_panel">
         <div>
-          <MessageCircle /> 100
+          <MessageCircle /> {comments}
         </div>
         <div>
           <Glasses /> 777

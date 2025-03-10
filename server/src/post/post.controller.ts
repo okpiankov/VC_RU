@@ -19,7 +19,7 @@ import { diskStorage } from 'multer';
 import * as fs from 'node:fs';
 import { Express } from 'express';
 import { Request } from 'express';
-import { JwtUserGuard } from 'src/user/jwt-user.guard';
+// import { JwtUserGuard } from 'src/user/jwt-user.guard';
 
 //Контроллеры - только обрабатывают HTPP запросы и возвращают ответы и вызывает сервис
 //Те принимает данные и отдает данные или ошибку клиенту
@@ -63,6 +63,7 @@ export class PostController {
   }
 
   //Чтобы заработало - нужно расположить перед получением всех постов (т.е. getPosts())!!!
+  //И чтобы месте с getPosts() приходили еще массивы комментариев - нужно добавить настройки именно в getPostsTheme()
   //Получение постов по темам
   @Get()
   getPostsTheme(@Query('theme') theme: string, @Req() request: Request) {

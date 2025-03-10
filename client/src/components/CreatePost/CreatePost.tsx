@@ -1,14 +1,14 @@
+// import { Plus, ChevronDown, X } from "lucide-react";
 import { useState } from "react";
 import "./CreatePost.scss";
-// import { Plus, ChevronDown, X } from "lucide-react";
 import { X } from "lucide-react";
 import axios from "axios";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import ImageUploader  from "quill-image-uploader";
+import ImageUploader from "quill-image-uploader";
 import { useSelector } from "react-redux";
 import { getUser } from "../../store/user/slice";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type TypeProps = {
   setPopUpCreatePost: (popUpCreatePost: boolean) => void;
@@ -74,13 +74,11 @@ const modules = {
 };
 
 export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
-
   // const [addSelect, setAddSelect] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [addTheme, setAddTheme] = useState("Без темы");
   console.log(addTheme);
   const user = useSelector(getUser);
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   //Контент для отправки на сервер(данные+теги) хранится как единая длинная строка
   //Каждое добавление картинки на сервер - в ответ приходит ссылка и добавляется в контент:
@@ -88,26 +86,27 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
   const [content, setContent] = useState("");
   console.log("Контент уходит на сервер:", content);
 
-  const createPosts = async () => {
-    setIsLoading(true);
-    try {
-      // const result = await axios.get("http://localhost:7777/uploads");
-      const result = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/posts`,
-        {
-          authorId: user.id,
-          theme: addTheme,
-          content: content,
-        }
-      );
-      console.log(result.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-      navigate("/");
-    }
+  const createPost = async () => {
+    const result = await axios.post<string>(
+      `${import.meta.env.VITE_BASE_URL}/posts`,
+      {
+        authorId: user.id,
+        theme: addTheme,
+        content: content,
+      }
+    );
+    console.log(result.data);
+    setPopUpCreatePost(false);
   };
+
+  const mutation = useMutation({
+    mutationKey: ["create_post"],
+    mutationFn: () => createPost(),
+    //Если нужно обновить данные(например получить все посты после создания нового)
+    //но вызов функции в другом модуле то использую invalidateQueries если в одном модуле то  query.refetch()
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
+  });
+  console.log("mutation.error", mutation.error);
 
   return (
     <>
@@ -152,7 +151,13 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
           {/* <div>{content}</div> */}
           {/* <div dangerouslySetInnerHTML={{ __html: content }}></div> */}
         </div>
-        <button onClick={() => {createPosts(); setPopUpCreatePost(false)}} className="button_create_post">
+        <button
+          onClick={() => {
+            mutation.mutate();
+            setPopUpCreatePost(false);
+          }}
+          className="button_create_post"
+        >
           Опубликовать
         </button>
         {/* <button className="button_create_post">Опубликовать</button> */}
@@ -160,6 +165,43 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
     </>
   );
 };
+
+//// Без tanstack/react-query
+// export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
+
+//   // const [addSelect, setAddSelect] = useState(false);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [addTheme, setAddTheme] = useState("Без темы");
+//   console.log(addTheme);
+//   const user = useSelector(getUser);
+//   const navigate = useNavigate();
+
+//   //Контент для отправки на сервер(данные+теги) хранится как единая длинная строка
+//   //Каждое добавление картинки на сервер - в ответ приходит ссылка и добавляется в контент:
+//   //в нужном месте вставляется тег img, таким образом все компануется перед итоговой публикацией поста
+//   const [content, setContent] = useState("");
+//   console.log("Контент уходит на сервер:", content);
+
+//   const createPosts = async () => {
+//     setIsLoading(true);
+//     try {
+//       // const result = await axios.get("http://localhost:7777/uploads");
+//       const result = await axios.post(
+//         `${import.meta.env.VITE_BASE_URL}/posts`,
+//         {
+//           authorId: user.id,
+//           theme: addTheme,
+//           content: content,
+//         }
+//       );
+//       console.log(result.data);
+//     } catch (error) {
+//       console.log(error);
+//     } finally {
+//       setIsLoading(false);
+//       navigate("/");
+//     }
+//   };
 
 {
   /* <h2 className="title">Заголовок</h2>
@@ -212,7 +254,6 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
       <option>Ссылка</option>
     </select> */
 }
-
 
 // const handleImageUpload = () => {
 //   const input = document.createElement('input');
