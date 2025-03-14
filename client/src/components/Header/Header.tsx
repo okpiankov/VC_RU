@@ -24,6 +24,7 @@ export const Header = ({
     dispatch(userActions.clearUserStore());
     navigate("/");
   };
+
   const handleClick = useCallback(
     (user: User) => {
       setPopUpLogin(true);

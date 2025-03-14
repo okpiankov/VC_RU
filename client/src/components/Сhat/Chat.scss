@@ -76,6 +76,7 @@
         }
       }
     }
+    
     // .button_chat:hover, .button_icon:hover {
     //   border-color: white;
     //   color: white;
@@ -160,5 +161,15 @@
   }
   to {
     right: 0;
+  }
+}
+.delete {
+  color: white;
+  position: fixed;
+  right: 560px;
+  top: 60px;
+  cursor: pointer;
+  &:hover {
+    color: red;
   }
 }

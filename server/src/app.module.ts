@@ -1,13 +1,15 @@
 // import { AppController } from './app.controller';
 // import { AppService } from './app.service';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+// import { LoggerMiddleware } from './conception/middleware';
+import { Module } from '@nestjs/common';
 import { PostModule } from './post/post.module';
-import { LoggerMiddleware } from './conception/middleware';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CommentModule } from './comment/comment.module';
+// import { WebsocketGateway } from './websocket.gateway';
+import { ChatModule } from './chat/chat.module';
 
 //Модули группируют связанные элементы, это корневая история
 //В рутовый модуль ипортируются дочерние модули
@@ -26,18 +28,20 @@ import { CommentModule } from './comment/comment.module';
     PostModule,
     UserModule,
     CommentModule,
+    ChatModule, //Websocket чат
   ],
+  //providers: [ChatModule] не надо
+  //providers: [WebsocketGateway],
   //controllers: [AppController],
-  //providers: [AppService],
 })
-
-// export class AppModule {}
+export class AppModule {}
 
 //Подключаю Middleware
 //Но Авторизацию лучше обрабатывать через Guards, а не через Middleware
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('posts');
-  }
-}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(LoggerMiddleware).forRoutes('posts');
+//   }
+// }
+
 //npm i --save @nestjs/config установить и добавить ConfigModule.forRoot() чтобы обращаться к файлу .env

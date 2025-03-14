@@ -22,7 +22,7 @@ model User {
   id String @id @default(cuid())
 
   fullName String
-  email    String @unique
+  email    String    @unique
   password String
   role     String
   posts    Post[]
@@ -39,28 +39,44 @@ model Post {
 
   theme    String
   content  String
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String @map("author_id")
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId String    @map("author_id")
   comments Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   //Изменяю название на "posts" таблицы в БД 
-  @@map("posts") 
+  @@map("posts")
 }
 
+//Модель для комментариев
 model Comment {
   id String @id @default(cuid())
 
-  text  String
+  text     String
   author   User   @relation(fields: [authorId], references: [id])
   authorId String @map("author_id")
 
-  post     Post   @relation(fields: [postId], references: [id])
-  postId   String @map("post_id")
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String @map("post_id")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   //Изменяю название на "comments" таблицы в БД 
-  @@map("comments") 
+  @@map("comments")
+}
+
+//Модель для чата
+model Message {
+  id String @id @default(cuid())
+
+  userId   String
+  userName String
+  text     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("messages")
 }

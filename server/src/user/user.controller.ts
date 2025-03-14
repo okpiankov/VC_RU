@@ -27,7 +27,7 @@ export class UserController {
     @Body() dto: AuthUserDto,
     @Res({ passthrough: true }) response: Response,
   ) {
-    console.log('dto_in_controller', dto);
+    // console.log('dto_in_controller', dto);
 
     const user = await this.userService.login(dto);
     //Деструктурирую нужные поля из dto пришедшие из userService

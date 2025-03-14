@@ -24,18 +24,18 @@ export class UserService {
 
   //Авторизация пользователя с валидацией dto
   async login(dto: AuthUserDto) {
-    console.log('dto_in_service', dto);
+    // console.log('dto_in_service', dto);
 
     //Проверяю зарегистрирован ли пользователь
     const user = await this.getUserByEmail(dto.email);
-    console.log('user_found', user);
+    // console.log('user_found', user);
 
     if (user?.password === undefined)
       throw new UnauthorizedException({ message: 'Неверный логин или пароль' });
 
     //Сравниваю пароль в запросе с захешированным паролем  из БД
     const isValidPass = await bcrypt.compare(dto.password, user?.password);
-    console.log('isValidPass', isValidPass);
+    // console.log('isValidPass', isValidPass);
     if (user && isValidPass) {
       const token = this.jwtService.sign(
         { email: user.email, id: user.id },
