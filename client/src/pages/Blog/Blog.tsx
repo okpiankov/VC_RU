@@ -1,15 +1,13 @@
-import "./Cabinet.scss";
+import "./Blog.scss";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { PostTitle } from "../../components/PostTitle/PostTitle";
 import { Skeleton2 } from "../../components/Skeleton/Skeleton";
-import { getUser } from "../../store/user/slice";
-import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-// import DOMPurify from "dompurify";
-// import parse from "html-react-parser";
+import { NavLink, useParams } from "react-router-dom";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
 
 type TypePostsListAuthor = {
   id: string;
@@ -34,13 +32,13 @@ type TypeCommensListAuthor = {
   post: { id: string; content: string };
 };
 
-export const Cabinet = () => {
-  const user = useSelector(getUser);
+export const Blog = () => {
+  const { id } = useParams();
 
   //Получение всех постов юзера
   const getUserPosts = async () => {
     const result = await axios.get<TypePostsListAuthor[]>(
-      `${import.meta.env.VITE_BASE_URL}/posts/authorId?id=${user?.id}`
+      `${import.meta.env.VITE_BASE_URL}/posts/authorId?id=${id}`
     );
     return result.data;
   };
@@ -54,7 +52,7 @@ export const Cabinet = () => {
   //Получение всех комментариев юзера
   const getUserComments = async () => {
     const result = await axios.get<TypeCommensListAuthor[]>(
-      `${import.meta.env.VITE_BASE_URL}/comments/authorId?id=${user?.id}`
+      `${import.meta.env.VITE_BASE_URL}/comments/authorId?id=${id}`
     );
     return result.data;
   };
@@ -66,7 +64,7 @@ export const Cabinet = () => {
   });
   console.log("userComments:", comments.data, "errorComments:", comments.error);
 
-  // if (data === undefined) return;
+  if (data === undefined) return;
   // if (comments.data === undefined) return;
   return (
     <div className="cabinet">
@@ -75,9 +73,9 @@ export const Cabinet = () => {
         <div className="color"></div>
         <div className="author">
           <img src="/dog.png" className="icon" />
-          <div className="name">{user?.fullName}</div>
+          <div className="name">{data[0]?.author.fullName}</div>
           <div className="title">
-            с нами с: {dayjs(user?.createdAt).format("DD MMMM YYYY")}
+            с нами с: {dayjs(data[0]?.author.createdAt).format("DD MMMM YYYY")}
           </div>
           <div className="navigate">
             <div
@@ -135,8 +133,13 @@ export const Cabinet = () => {
                     <b>{comment.author.fullName}</b> в посте:
                   </div>
                   <NavLink className="navLink" to={`/${comment.post.id}`}>
-                    <div className="comment_content2">
-                      {comment.post.content.substring(0, 70) + "..."}
+                    <div className="comment_content">
+                    {parse(
+                        DOMPurify.sanitize(
+                          comment.post.content.substring(0, 70) + "..."
+                        ),
+                      )}
+                      {/* {comment.post.content.substring(0, 70) + "..."} */}
                     </div>
                   </NavLink>
                   <div>

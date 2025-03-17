@@ -1,10 +1,11 @@
 // import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.scss";
-import { Pencil } from "lucide-react";
+import { Pencil, Search, Redo2 } from "lucide-react";
 import { getUser, User, userActions } from "../../store/user/slice";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { SearchQuery } from "../../pages/Search/SearchQuery";
 
 type TypeProps = {
   setDrawerChat: (drawerChat: boolean) => void;
@@ -29,23 +30,32 @@ export const Header = ({
     (user: User) => {
       setPopUpLogin(true);
       if (user.role === "client") {
-        setPopUpCreatePost(true);
+        // setPopUpCreatePost(true);
         setPopUpLogin(false);
       }
     },
-    [setPopUpLogin, setPopUpCreatePost]
+    [setPopUpLogin]
   );
+
   useEffect(() => {
     if (user.role === "") return;
     handleClick(user);
   }, [user, handleClick]);
 
+  const [search, setSearch] = useState(false);
   return (
     <div className="header">
       <div className="header_container">
         <div className="logo">
           VC<br></br>.RU
         </div>
+        {search && <SearchQuery /> ? (
+          <SearchQuery />
+        ) : (
+          <Search className="icon_search" onClick={() => setSearch(!search)} />
+        )}
+        {search && <Redo2 className="icon_search" onClick={() => setSearch(!search)} />}
+
         {/*Рендерится если пользователь  Авторизован: */}
         {user.role === "client" && (
           <div className="login" onClick={() => setPopUpCreatePost(true)}>
@@ -65,7 +75,6 @@ export const Header = ({
             className="login"
             onClick={() => {
               setPopUpLogin(true);
-              // setPopUpCreatePost(false);
             }}
           >
             Войти
@@ -94,7 +103,7 @@ export const Header = ({
           </div>
         )}
         {user.role === "client" && (
-          <div className="user">
+          <div className="user" onClick={() => navigate("/cabinet")}>
             <img src="/dog.png" className="img" />
             {/* П */}
           </div>

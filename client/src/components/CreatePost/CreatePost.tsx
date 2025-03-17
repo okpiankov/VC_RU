@@ -93,10 +93,13 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
         authorId: user.id,
         theme: addTheme,
         content: content,
+      },
+      {
+        withCredentials: true,
       }
     );
     console.log(result.data);
-    setPopUpCreatePost(false);
+    setPopUpCreatePost(false); 
   };
 
   const mutation = useMutation({

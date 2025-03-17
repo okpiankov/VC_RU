@@ -20,7 +20,20 @@ export class CommentService {
     return this.prisma.comment.findMany({
       where: { postId },
       include: {
+        author: { select: { fullName: true, id: true } },
+      },
+    });
+  }
+
+  //Получение комментариев  по id автора
+  getUserСomments(id: string): Promise<Comment[] | null> {
+    return this.prisma.comment.findMany({
+      where: {
+        authorId: id,
+      },
+      include: {
         author: { select: { fullName: true } },
+        post: { select: { id: true, content: true } },
       },
     });
   }

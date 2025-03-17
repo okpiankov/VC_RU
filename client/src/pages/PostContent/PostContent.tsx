@@ -5,7 +5,7 @@ import { MessageCircle, Glasses } from "lucide-react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { arrayTheme } from "../PostsListTheme/PostsListTheme";
 import { Skeleton2 } from "../../components/Skeleton/Skeleton";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ type TypePostContent = {
   id: string | undefined;
   author: {
     fullName: string;
+    id: string;
   };
   authorId: string;
   content: string;
@@ -60,7 +61,9 @@ export const PostContent = () => {
         {/* <div className="name">{post.author}</div> */}
 
         <div className="author">
-          <b className="name">{data?.author?.fullName}</b>
+          <NavLink to={`/blog/${data?.author?.id}`}>
+            <b className="name">{data?.author?.fullName}</b>
+          </NavLink>
           <div className="theme">
             <img className="icon" src={objectTheme?.icon} />
             {data?.theme}

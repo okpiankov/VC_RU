@@ -6,20 +6,24 @@ export type User = {
   fullName: string | null;
   id: string | null;
   role: string | null;
+  createdAt: string | null;
 };
 
 type UserSliceState = {
   isLoading: boolean;
+  isPopUpLogin: boolean;
   user: User;
 };
 
 const initialState: UserSliceState = {
   isLoading: false,
+  isPopUpLogin: false,
   user: {
     email: "",
     fullName: "",
     id: "",
     role: "",
+    createdAt: "",
   },
 };
 
@@ -33,6 +37,9 @@ export const userSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setIsPopUpLogin: (state, action: PayloadAction<boolean>) => {
+      state.isPopUpLogin = action.payload;
+    },
     clearUserStore: () => initialState,
   },
   selectors: {
@@ -40,9 +47,10 @@ export const userSlice = createSlice({
     getUserIsLoading: (state) => state.isLoading,
     getUserFullName: (state) => state.user.fullName,
     getUserRole: (state) => state.user.role,
+    getIsPopUpLogin: (state) => state.isPopUpLogin,
   },
 });
 
 export const userActions = userSlice.actions;
 
-export const { getUser, getUserFullName, getUserRole } = userSlice.selectors;
+export const { getUser, getUserFullName, getUserRole, getIsPopUpLogin } = userSlice.selectors;

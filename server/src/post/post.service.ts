@@ -17,9 +17,30 @@ export class PostService {
     return this.prisma.post.findMany({
       include: {
         author: { select: { fullName: true } },
+        comments: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     // return ['post1', 'post2', 'post3'];
+  }
+
+  //Получение поста по его id
+  //Можно получить все связанные с постом комментарии со всеми полями и авторством
+  getOnePost(id: string): Promise<Post | null> {
+    return this.prisma.post.findUnique({
+      where: { id },
+      include: {
+        author: { select: { fullName: true, id: true } },
+        comments: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
   }
 
   //Получение постов по теме
@@ -35,17 +56,34 @@ export class PostService {
     });
   }
 
-  //Получение поста по id
-  //Можно получить все связанные с постом комментарии со всеми полями и авторством
-  getOnePost(id: string): Promise<Post | null> {
-    return this.prisma.post.findUnique({
-      where: { id },
+  //Поиск постов по любому слову
+  searchPosts(title: string): Promise<Post[]> {
+    return this.prisma.post.findMany({
+      where: {
+        content: {
+          contains: title,
+          mode: 'insensitive',
+        },
+      },
       include: {
         author: { select: { fullName: true } },
         comments: {
-          select: {
-            id: true,
-          },
+          select: { id: true },
+        },
+      },
+    });
+  }
+
+  //Получение постов  по id автора
+  getUserPosts(id: string): Promise<Post[]> {
+    return this.prisma.post.findMany({
+      where: {
+        authorId: id,
+      },
+      include: {
+        author: { select: { fullName: true, createdAt: true } },
+        comments: {
+          select: { id: true },
         },
       },
     });

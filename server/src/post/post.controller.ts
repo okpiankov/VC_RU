@@ -62,13 +62,28 @@ export class PostController {
     return { url: `http://localhost:7777/uploads/${file.originalname}` };
   }
 
-  //Чтобы заработало - нужно расположить перед получением всех постов (т.е. getPosts())!!!
-  //И чтобы месте с getPosts() приходили еще массивы комментариев - нужно добавить настройки именно в getPostsTheme()
+  //ВАЖНО!!! чтобы функционал из Service из одной функции-контроллера не перекрывал функционал в другой Ф-К
+  //обязательно добавлять уникальную часть пути: @Get('theme') @Get('search') @Get('authorId')
+
   //Получение постов по темам
-  @Get()
+  @Get('theme')
   getPostsTheme(@Query('theme') theme: string, @Req() request: Request) {
-    console.log('controller', theme, request.query);
+    console.log('controller_PostsTheme', theme, request.query);
     return this.postService.getPostsTheme(theme);
+  }
+
+  //Поиск постов по любому слову
+  @Get('search')
+  searchPosts(@Query('title') title: string) {
+    // console.log('controller_search', title);
+    return this.postService.searchPosts(title);
+  }
+
+  //Получение постов  по id автора
+  @Get('authorId')
+  getUserPosts(@Query('id') id: string) {
+    // console.log('controller_userPosts', id);
+    return this.postService.getUserPosts(id);
   }
 
   //Получение всех постов
@@ -77,17 +92,16 @@ export class PostController {
     return this.postService.getPosts();
   }
 
-  //Получение конкретного поста
+  //Получение конкретного поста по его id
   //Обязательно передаю ':id' в @Get если хочу получать данные по конкретному посту через id поста
-  // @UseGuards(JwtUserGuard)
   @Get(':id')
   getOnePost(@Param('id') id: string) {
-    // console.log('controller', id);
+    console.log('controller_getOnePost', id);
     return this.postService.getOnePost(id);
   }
 
   //Создание поста
-  //@UseGuards(JwtUserGuard) - пример использования защитника для эндпоинта
+  //@UseGuards(JwtUserGuard)
   @Post()
   createPost(
     @Body() body: any,
@@ -96,7 +110,7 @@ export class PostController {
     @Body('authorId') authorId: string,
     // @Body('author') author: Prisma.UserCreateNestedOneWithoutPostsInput,
   ) {
-    console.log('controller', body);
+    // console.log('controller_create_post', body);
     return this.postService.createPost(theme, content, authorId);
   }
 

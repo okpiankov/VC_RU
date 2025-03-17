@@ -3,6 +3,7 @@ import "./LeftMenu.scss";
 import { Crown, Clock4, TvMinimalPlay } from "lucide-react";
 
 export const LeftMenu = () => {
+
   return (
     <nav>
       <NavLink className="navLink" to="/">
@@ -31,7 +32,7 @@ export const LeftMenu = () => {
         AI
       </NavLink>
       <NavLink className="navLink" to="/theme?theme=Инвестиции">
-        <img src="/investment.jpeg" /> 
+        <img src="/investment.jpeg" />
         Инвестиции
       </NavLink>
       <NavLink className="navLink" to="/theme?theme=Будущее">

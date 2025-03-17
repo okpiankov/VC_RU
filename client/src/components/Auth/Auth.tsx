@@ -62,9 +62,9 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
     console.log("user", result.data);
     dispatch(userActions.setUser(result.data));
 
-    // if (result.data.role === "client") {
-    //   navigate("/cabinet");
-    // }
+    if (result.data.role === "client") {
+      navigate("/cabinet");
+    }
     // if (result.data.role === "admin") {
     //   navigate("/admin");
     // }
@@ -79,7 +79,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
   });
   const { isPending, isError } = mutation;
   console.log("mutation.error", mutation.error);
- 
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     mutation.mutate();
@@ -89,7 +89,13 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
 
   return (
     <>
-      <div className="overlay_auth" onClick={() => setPopUpLogin(false)}></div>
+      <div
+        className="overlay_auth"
+        onClick={() => {
+          dispatch(userActions.setIsPopUpLogin(false));
+          setPopUpLogin(false);
+        }}
+      ></div>
       {isError && <div className="reg">{err.response.data.message}</div>}
       {isPending === true && <div className="loading">Загрузка...</div>}
 

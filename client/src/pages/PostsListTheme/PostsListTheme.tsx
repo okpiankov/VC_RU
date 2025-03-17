@@ -96,7 +96,7 @@ export const PostsListTheme = () => {
 
   const getPostsTheme = async (theme: string | null) => {
     const result = await axios.get<TypePostsListTheme[]>(
-      `${import.meta.env.VITE_BASE_URL}/posts?theme=${theme}`
+      `${import.meta.env.VITE_BASE_URL}/posts/theme?theme=${theme}`
     );
     return result.data;
   };
@@ -131,7 +131,8 @@ export const PostsListTheme = () => {
             theme={item.theme}
             author={item.author.fullName}
             content={item.content}
-            comments={item.comments.length}
+            comments={item?.comments?.length}
+            authorId={item.authorId}
           />
         ))
       ) : (
@@ -155,7 +156,7 @@ export const PostsListTheme = () => {
 //     setIsLoading(true);
 //     try {
 //       const result = await axios.get(
-//         `${import.meta.env.VITE_BASE_URL}/posts?theme=${theme}`
+//         `${import.meta.env.VITE_BASE_URL}/posts/theme?theme=${theme}`
 //       );
 //       console.log("postsListTheme", result.data);
 //       setPosts(result.data);

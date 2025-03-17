@@ -20,7 +20,7 @@ export class JwtUserGuard implements CanActivate {
       .switchToHttp()
       .getRequest<{ user?: any; cookies?: { cookieName1?: string } }>();
     try {
-      console.log('request', request);
+      // console.log('request', request);
       //Чтобы исключить ошибку типа с undefined
       const token =
         request?.cookies?.cookieName1 !== undefined

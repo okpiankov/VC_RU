@@ -2,8 +2,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import "./Comments.scss";
 import axios from "axios";
 import dayjs from "dayjs";
-import { getUser } from "../../store/user/slice";
-import { useSelector } from "react-redux";
+import { getUser, userActions } from "../../store/user/slice";
+import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 type TypePostId = {
@@ -38,7 +38,9 @@ export const Comments = ({ postId }: TypePostId) => {
     text: "",
     postId: postId,
   };
-  const [formData, setFormData] = useState<TypeCommentSend>({...initialState});
+  const [formData, setFormData] = useState<TypeCommentSend>({
+    ...initialState,
+  });
 
   // Функция для очистки формы после отправки
   function resetForm() {
@@ -73,7 +75,10 @@ export const Comments = ({ postId }: TypePostId) => {
   const createComment = async () => {
     const response = await axios.post<TypeCommentSend>(
       `${import.meta.env.VITE_BASE_URL}/comments`,
-      { ...formData, authorId: user.id }
+      { ...formData, authorId: user.id },
+      {
+        withCredentials: true,
+      }
     );
     return response.data;
   };
@@ -89,12 +94,14 @@ export const Comments = ({ postId }: TypePostId) => {
       resetForm();
     },
   });
-
+  const dispatch = useDispatch();
   if (data === undefined) return;
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     //Можно не передавать данные в мутацию
     mutation.mutate();
+    if (user.fullName === "") dispatch(userActions.setIsPopUpLogin(true));
   };
   console.log("mutation.data", mutation.data);
 
@@ -112,7 +119,7 @@ export const Comments = ({ postId }: TypePostId) => {
           <button
             type="submit"
             className="button"
-            // onClick={() => {mutate({...formData}); resetForm()}}
+            // onClick={() => {mutate({...formData}); resetForm()}} 
           >
             {isLoading ? "Загрузка..." : "Добавить"}
           </button>

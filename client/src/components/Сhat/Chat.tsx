@@ -14,25 +14,34 @@ import { getUser } from "../../store/user/slice";
 import { io, Socket } from "Socket.IO-client";
 // import { io, Socket } from "Socket.io-client";
 import dayjs from "dayjs";
-import { Message, Prisma } from "@prisma/client";
+// import { Message, Prisma } from "@prisma/client";
 
 type TypeProps = {
   setDrawerChat: (drawerChat: boolean) => void;
 };
-
+type TypeMessageGet = {
+  id: string;
+  text: string;
+  userName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+};
+type TypeMessagePost = {
+  text: string;
+  userName: string | null;
+  userId: string | null;
+};
+//экземпляр сокета
+let socket: Socket;
 export const Chat = ({ setDrawerChat }: TypeProps) => {
   const user = useSelector(getUser);
 
-  // const socket = io("http://localhost:5555/chat", {
-  //   query: {
-  //     userName: user.fullName,
-  //   },
-  // });
   //экземпляр сокета
-  let socket: Socket;
-  //console.log(Socket)
+  // let socket: Socket;
+  // console.log(Socket)
 
-  useEffect(() => {
+  // useEffect(() => {
     //важно: один пользователь - один сокет
     if (!socket) {
       socket = io("http://localhost:5555/chat", {
@@ -41,7 +50,7 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
         },
       });
     }
-  }, [user]);
+  // }, [user]);
 
   //Для отправки сообщения
   // const [formData, setFormData] = useState({
@@ -55,14 +64,16 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
     userId: user.id,
     userName: user.fullName,
   };
-  const [formData, setFormData] = useState({ ...initialState });
+  const [formData, setFormData] = useState<TypeMessagePost>({
+    ...initialState,
+  });
 
   // Функция для очистки формы после отправки
   function resetForm() {
     Object.assign(formData, initialState);
   }
   //Для получения всех сообщений
-  const [messages, setMessages] = useState<Message[]>();
+  const [messages, setMessages] = useState<TypeMessageGet[] | []>([]);
   const [log, setLog] = useState<string>();
 
   useEffect(() => {
@@ -71,14 +82,8 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
       setLog(log);
       console.log("log", log);
     });
-
-    // // отключение пользователя
-    // socket.on("disconnect", () => {
-    //   console.log("socket.disconnected", socket.disconnected);
-    // });
-
     // получение сообщений
-    socket.on("messages", (messages: Message[]) => {
+    socket.on("messages", (messages: TypeMessageGet[]) => {
       setMessages(messages);
     });
 
@@ -86,7 +91,7 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
   }, []);
 
   // отправка сообщения
-  const send = useCallback((payload: Prisma.MessageCreateInput) => {
+  const send = useCallback((payload: TypeMessagePost) => {
     socket.emit("message:post", payload);
   }, []);
 
@@ -94,7 +99,7 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
   const remove = useCallback(() => {
     socket.emit("messages:clear");
     // получение сообщений
-    socket.on("messages", (messages: Message[]) => {
+    socket.on("messages", (messages: TypeMessageGet[]) => {
       setMessages(messages);
     });
     socket.emit("messages:get");

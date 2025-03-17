@@ -31,14 +31,14 @@ export class UserController {
 
     const user = await this.userService.login(dto);
     //Деструктурирую нужные поля из dto пришедшие из userService
-    const { token, fullName, id, email, role } = user;
+    const { token, fullName, id, email, role, createdAt } = user;
     const options = {
       maxAge: 1000 * 60 * 60, // срок жизни 60 минут
       httpOnly: true,
     };
     //Прикрепляю к ответу куки
     response.cookie('cookieName1', token, options);
-    return { fullName, id, email, role };
+    return { fullName, id, email, role, createdAt };
   }
 
   //Регистрация пользователя c валидацией dto

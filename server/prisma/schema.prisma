@@ -17,7 +17,7 @@ datasource db {
 
 //Схемы для таблиц
 //Если много таблиц то можно разделить на отдельные файлы
-//Связей posts    Post[] comments Comment[]... не видно в БД через pgAdmin и в приходящем ответе с сервера 
+//Связей posts    Post[] comments Comment[]... не видно в БД через pgAdmin и в приходящем ответе с сервера но они есть 
 model User {
   id String @id @default(cuid())
 

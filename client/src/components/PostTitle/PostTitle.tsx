@@ -11,9 +11,10 @@ type TypePostTitle = {
   theme: string;
   content: string;
   comments: number;
+  authorId: string
 };
 
-export const PostTitle = ({ id, author, theme, content, comments }: TypePostTitle) => {
+export const PostTitle = ({ id, author, theme, content, comments, authorId }: TypePostTitle) => {
   
   //Парсинг HTML с тегами в React html-react-parser и безопасность от атак (XSS) dompurify
   const dirtyHTML = content;
@@ -28,7 +29,7 @@ export const PostTitle = ({ id, author, theme, content, comments }: TypePostTitl
   return (
     <NavLink className="post_title" to={`/${id}`}>
       <div className="author">
-        <b className="name">{author}</b>
+      <NavLink to={`/blog/${authorId}`}><b className="name">{author}</b></NavLink>
         <div className="theme">
           <img className="icon" src={objectTheme?.icon} />
           {theme}

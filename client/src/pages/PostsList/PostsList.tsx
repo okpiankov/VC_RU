@@ -23,7 +23,6 @@ export const PostsList = () => {
     );
     return result.data;
   };
-  //Те useState useEffect try catch finally не нужны, как протипизировать data, почему 4 рендера как уменьшить?
   //Получение всех постов
   //useQuery() для получения данных, useMutation() для обновленния данных
   //данные из useQuery получаются только через "data"
@@ -38,7 +37,7 @@ export const PostsList = () => {
     //Запрос зависит от условия можно сделать если только isAuth true
     //enabled: isAuth,
     //Запрос будет повторяться каждые 1000 мс
-    // staleTime: 1000,
+    //staleTime: 1000,
     //Начальное состояние
     initialData: [
       {
@@ -74,7 +73,8 @@ export const PostsList = () => {
           theme={item.theme}
           author={item.author.fullName}
           content={item.content}
-          comments={item.comments.length}
+          comments={item?.comments?.length}
+          authorId={item.authorId}
         />
       ))}
     </div>
