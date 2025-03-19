@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import "./Chat.scss";
-import { Send, Trash2 } from "lucide-react";
+import { Send, Trash2, X } from "lucide-react";
 import { useSelector } from "react-redux";
 import { getUser } from "../../store/user/slice";
 import { io, Socket } from "Socket.IO-client";
@@ -42,14 +42,14 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
   // console.log(Socket)
 
   // useEffect(() => {
-    //важно: один пользователь - один сокет
-    if (!socket) {
-      socket = io("http://localhost:5555/chat", {
-        query: {
-          userName: user.fullName,
-        },
-      });
-    }
+  //важно: один пользователь - один сокет
+  if (!socket) {
+    socket = io("http://localhost:5555/chat", {
+      query: {
+        userName: user.fullName,
+      },
+    });
+  }
   // }, [user]);
 
   //Для отправки сообщения
@@ -152,7 +152,14 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
         }}
         className="overlay_chat"
       ></div>
+
       <div className="container_chat showRight">
+        <X
+          className="logOut"
+          onClick={() => {
+            setDrawerChat(false);
+          }}
+        />
         <form className="form_chat" onSubmit={handleSubmit}>
           <textarea
             onChange={handleChange}

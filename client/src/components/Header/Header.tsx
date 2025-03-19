@@ -1,9 +1,18 @@
 // import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.scss";
-import { Pencil, Search, Redo2 } from "lucide-react";
+import {
+  Pencil,
+  Search,
+  Redo2,
+  UserRound,
+  Menu,
+  LogOut,
+  Send,
+  X,
+} from "lucide-react";
 import { getUser, User, userActions } from "../../store/user/slice";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { SearchQuery } from "../../pages/Search/SearchQuery";
 
@@ -11,12 +20,18 @@ type TypeProps = {
   setDrawerChat: (drawerChat: boolean) => void;
   setPopUpLogin: (popUpLogin: boolean) => void;
   setPopUpCreatePost: (popUpCreatePost: boolean) => void;
+  menu: boolean;
+  setMenu: (menu: boolean) => void;
 };
 export const Header = ({
   setDrawerChat,
   setPopUpLogin,
   setPopUpCreatePost,
+  menu,
+  setMenu,
 }: TypeProps) => {
+  console.log("menu", menu);
+
   const user = useSelector(getUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,63 +59,115 @@ export const Header = ({
 
   const [search, setSearch] = useState(false);
   return (
-    <div className="header">
-      <div className="header_container">
-        <div className="logo">
-          VC<br></br>.RU
+    <>
+      {/* Хедер для всех кроме мобильных устройств */}
+      <div className="header">
+        <div className="header_container">
+          <div className="logo">
+            VC<br></br>.RU
+          </div>
+          {search && <SearchQuery /> ? (
+            <SearchQuery />
+          ) : (
+            <Search
+              className="icon_search"
+              onClick={() => setSearch(!search)}
+            />
+          )}
+          {search && (
+            <Redo2 className="icon_search" onClick={() => setSearch(!search)} />
+          )}
+
+          {/*Рендерится если пользователь  Авторизован: */}
+          {user.role === "client" && (
+            <div className="login" onClick={() => setPopUpCreatePost(true)}>
+              <Pencil />
+              Написать
+            </div>
+          )}
+          {/*Рендерится если пользователь НЕ авторизован: */}
+          {user.role === "" && (
+            <div className="login" onClick={() => handleClick(user)}>
+              <Pencil />
+              Написать
+            </div>
+          )}
+          {user.id === "" && (
+            <div
+              className="login"
+              onClick={() => {
+                setPopUpLogin(true);
+              }}
+            >
+              Войти
+            </div>
+          )}
+          {user.role === "client" && (
+            <div
+              className="logout"
+              onClick={() => {
+                handleLogout();
+                setPopUpCreatePost(false);
+              }}
+            >
+              Выйти
+            </div>
+          )}
+
+          {user.role === "client" && (
+            <div
+              className="chat"
+              onClick={() => {
+                setDrawerChat(true);
+              }}
+            >
+              Чат
+            </div>
+          )}
+          {user.role === "client" && (
+            <div className="user" onClick={() => navigate("/cabinet")}>
+              <img src="/dog.png" className="img" />
+              {/* П */}
+            </div>
+          )}
         </div>
-        {search && <SearchQuery /> ? (
+      </div>
+
+      {/* Хедер для мобильных устройств */}
+      <div className="header_phone">
+        
+        <NavLink className="vcru" to="/">
+          VC<br></br>.RU
+        </NavLink>
+
+        <Menu onClick={() => setMenu(!menu)} />
+        {search && <X onClick={() => setSearch(!search)} /> ? (
           <SearchQuery />
         ) : (
-          <Search className="icon_search" onClick={() => setSearch(!search)} />
+          <Search onClick={() => setSearch(!search)} />
         )}
-        {search && <Redo2 className="icon_search" onClick={() => setSearch(!search)} />}
-
-        {/*Рендерится если пользователь  Авторизован: */}
-        {user.role === "client" && (
-          <div className="login" onClick={() => setPopUpCreatePost(true)}>
-            <Pencil />
-            Написать
-          </div>
-        )}
-        {/*Рендерится если пользователь НЕ авторизован: */}
-        {user.role === "" && (
-          <div className="login" onClick={() => handleClick(user)}>
-            <Pencil />
-            Написать
-          </div>
-        )}
+        {search && <X onClick={() => setSearch(!search)} />}
         {user.id === "" && (
-          <div
-            className="login"
+          <UserRound
             onClick={() => {
               setPopUpLogin(true);
             }}
-          >
-            Войти
-          </div>
+          />
         )}
         {user.role === "client" && (
-          <div
-            className="logout"
+          <Send
+            onClick={() => {
+              setDrawerChat(true);
+            }}
+          />
+        )}
+        {user.role === "client" && (
+          <LogOut
             onClick={() => {
               handleLogout();
               setPopUpCreatePost(false);
             }}
-          >
-            Выйти
-          </div>
-        )}
-
-        {user.role === "client" && (
-          <div
-            className="chat"
-            onClick={() => {
-              setDrawerChat(true);
-            }}
-          >
-            Чат
-          </div>
+          />
         )}
         {user.role === "client" && (
           <div className="user" onClick={() => navigate("/cabinet")}>
@@ -108,7 +175,13 @@ export const Header = ({
             {/* П */}
           </div>
         )}
+        {/*Рендерится если пользователь  Авторизован: */}
+        {user.role === "client" && (
+          <div className="pencil" onClick={() => setPopUpCreatePost(true)}>
+            <Pencil />
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };

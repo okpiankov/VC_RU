@@ -14,13 +14,23 @@
 
   @media (max-width: 1035px) {
     padding-left: 0;
-   }
+  }
+  @media (max-width: 880px) {
+    padding-right: 10px;
+  }
+  @media (max-width: 440px) {
+    display: none;
+    pointer-events: none;
+  }
   .logo {
     position: absolute;
     left: 157px;
     @media (max-width: 1035px) {
       left: 27px;
-     }
+    }
+    @media (max-width: 880px) {
+      left: 17px;
+    }
   }
   .header_container {
     width: 1250px;
@@ -33,7 +43,7 @@
     // padding-left: 157px;
     @media (max-width: 1035px) {
       width: 860px;
-   }
+    }
     .login {
       display: flex;
       flex-direction: row;
@@ -46,7 +56,7 @@
       border: 1px solid rgb(254, 115, 138);
       border-radius: 20px;
       &:hover {
-        background-color: rgb(255, 170, 184); 
+        background-color: rgb(255, 170, 184);
       }
     }
     .logout {
@@ -60,7 +70,7 @@
       border: 1px solid rgb(254, 115, 138);
       border-radius: 20px;
       &:hover {
-        background-color:  rgb(255, 170, 184); 
+        background-color: rgb(255, 170, 184);
       }
     }
     .chat {
@@ -74,7 +84,7 @@
       border: 1px solid rgb(254, 115, 138);
       border-radius: 20px;
       &:hover {
-        background-color: rgb(255, 170, 184); 
+        background-color: rgb(255, 170, 184);
       }
     }
     .icon_search {
@@ -91,7 +101,7 @@
       border: 1px solid rgb(254, 115, 138);
       border-radius: 20px;
       &:hover {
-        background-color: rgb(255, 170, 184); 
+        background-color: rgb(255, 170, 184);
       }
       .img {
         height: 40px;
@@ -100,5 +110,66 @@
         align-self: center;
       }
     }
+  }
+}
+.header_phone {
+  display: none;
+  pointer-events: none;
+  @media (max-width: 440px) {
+    pointer-events: auto; //сделал активные кнопки
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgb(255, 225, 230);
+    border-bottom: 1px solid rgb(254, 115, 138);
+  }
+  .vcru {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: rgb(255, 79, 109);
+    font-weight: 600;
+  }
+  .user {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    border: 1px solid rgb(254, 115, 138);
+    border-radius: 20px;
+    &:hover {
+      background-color: rgb(255, 170, 184);
+    }
+    .img {
+      height: 30px;
+      width: 30px;
+      border-radius: 20px;
+      align-self: center;
+    }
+  }
+  .pencil {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 25px;
+    position: fixed;
+    bottom: 60px;
+    right: 10px;
   }
 }

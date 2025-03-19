@@ -8,6 +8,7 @@ import { LoginForm } from "../components/Auth/LoginForm";
 import { CreatePost } from "../components/CreatePost/CreatePost";
 import { useSelector } from "react-redux";
 import { getIsPopUpLogin } from "../store/user/slice";
+import { LeftMenuPhone } from "../components/LeftMenuPhone/LeftMenuPhone";
 
 export const MainPage = () => {
   const IsPopUpLogin = useSelector(getIsPopUpLogin);
@@ -23,6 +24,8 @@ export const MainPage = () => {
   const [popUpCreatePost, setPopUpCreatePost] = useState(false);
   //Для открытия чата
   const [drawerChat, setDrawerChat] = useState(false);
+  //Для открытия панели навигации для мобильных устройств
+  const [menu, setMenu] = useState(false);
 
   return (
     <div className="container_main">
@@ -35,9 +38,13 @@ export const MainPage = () => {
         setDrawerChat={setDrawerChat}
         setPopUpLogin={setPopUpLogin}
         setPopUpCreatePost={setPopUpCreatePost}
+        menu={menu}
+        setMenu={setMenu}
       />
       <div className="container_inner">
         <LeftMenu />
+        {/* Панель навигации для мобильных устройств */}
+        {menu && <LeftMenuPhone menu={menu} setMenu={setMenu} />}
         <section>
           <Outlet />
         </section>

@@ -99,7 +99,7 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
       }
     );
     console.log(result.data);
-    setPopUpCreatePost(false); 
+    setPopUpCreatePost(false);  
   };
 
   const mutation = useMutation({
