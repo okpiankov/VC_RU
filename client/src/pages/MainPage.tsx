@@ -45,7 +45,7 @@ export const MainPage = () => {
         <LeftMenu />
         {/* Панель навигации для мобильных устройств */}
         {menu && <LeftMenuPhone menu={menu} setMenu={setMenu} />}
-        <section>
+        <section className="section">
           <Outlet />
         </section>
       </div>

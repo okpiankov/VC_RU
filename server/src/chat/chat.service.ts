@@ -24,6 +24,11 @@ export class ChatService {
     return this.prisma.message.deleteMany();
   }
 
+  //Удаление сообщения по id в админке
+  deleteMessageId(id: string) {
+    return this.prisma.message.delete({ where: { id } });
+  }
+
   // // обновление сообщения
   // async updateMessage(payload: MessageUpdatePayload) {
   //   const { id, text } = payload;

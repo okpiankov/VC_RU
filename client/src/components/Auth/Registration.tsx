@@ -76,7 +76,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
   // }
   const registration = async () => {
     const result = await axios.post<TypeUserGet>(
-      `${import.meta.env.VITE_BASE_URL}/auth/registration`,
+      `${import.meta.env.VITE_BASE_URL}/users/registration`,
       formData
       // {
       //   withCredentials: true,
@@ -221,7 +221,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
 //       setIsLoading(true);
 //       try {
 //         const result = await axios.post(
-//           `${import.meta.env.VITE_BASE_URL}/auth/registration`,
+//           `${import.meta.env.VITE_BASE_URL}/users/registration`,
 //           formData,
 //           // {
 //           //   withCredentials: true,

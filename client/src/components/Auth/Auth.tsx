@@ -20,6 +20,7 @@ type TypeAuth = {
   fullName: string;
   role: string;
   id: string;
+  createdAt: string;
 };
 
 export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
@@ -27,7 +28,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "user@test.com",
+    email: "admin@test.com",
     password: "123",
   });
   //Стейты  для валидации:
@@ -53,7 +54,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
   //Авторизация post запрос обрабатывается через useMutation
   const login = async () => {
     const result = await axios.post<TypeAuth>(
-      `${import.meta.env.VITE_BASE_URL}/auth/login`,
+      `${import.meta.env.VITE_BASE_URL}/users/login`,
       formData,
       {
         withCredentials: true,
@@ -65,9 +66,9 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
     if (result.data.role === "client") {
       navigate("/cabinet");
     }
-    // if (result.data.role === "admin") {
-    //   navigate("/admin");
-    // }
+    if (result.data.role === "admin") {
+      navigate("/admin");
+    }
 
     console.log("cookies", document.cookie);
     // !error && setPopUpLogin(false);
@@ -98,6 +99,14 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
       ></div>
       {isError && <div className="reg">{err.response.data.message}</div>}
       {isPending === true && <div className="loading">Загрузка...</div>}
+      <div className="welcome showWelcome">
+        Админка:<br></br> 
+        логин: admin@test.com<br></br>
+        пароль: 123<br></br>
+        Личный кабинет:<br></br>
+        логин: user@test.com<br></br>
+        пароль: 123 
+      </div>
 
       <form onSubmit={handleSubmit} className="form showTop">
         <div className="nameError">{emailError}</div>
@@ -166,7 +175,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
 //       setIsLoading(true);
 //       try {
 //         const result = await axios.post(
-//           `${import.meta.env.VITE_BASE_URL}/auth/login`,
+//           `${import.meta.env.VITE_BASE_URL}/users/login`,
 //           formData,
 //           {
 //             withCredentials: true,

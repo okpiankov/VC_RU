@@ -43,7 +43,7 @@ export const Blog = () => {
     return result.data;
   };
   const { data, error, isLoading } = useQuery({
-    queryKey: ["userPosts"],
+    queryKey: ["userPosts"], 
     queryFn: () => getUserPosts(),
   });
   console.log("userPosts:", data, "error:", error);

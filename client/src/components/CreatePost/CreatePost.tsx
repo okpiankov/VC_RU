@@ -99,7 +99,7 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
       }
     );
     console.log(result.data);
-    setPopUpCreatePost(false);  
+    setPopUpCreatePost(false);
   };
 
   const mutation = useMutation({
@@ -107,7 +107,10 @@ export const CreatePost = ({ setPopUpCreatePost }: TypeProps) => {
     mutationFn: () => createPost(),
     //Если нужно обновить данные(например получить все посты после создания нового)
     //но вызов функции в другом модуле то использую invalidateQueries если в одном модуле то  query.refetch()
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
+    },
   });
   console.log("mutation.error", mutation.error);
 

@@ -19,7 +19,7 @@ import { diskStorage } from 'multer';
 import * as fs from 'node:fs';
 import { Express } from 'express';
 import { Request } from 'express';
-// import { JwtUserGuard } from 'src/user/jwt-user.guard';
+import { JwtUserGuard } from 'src/user/jwt-user.guard';
 
 //Контроллеры - только обрабатывают HTPP запросы и возвращают ответы и вызывает сервис
 //Те принимает данные и отдает данные или ошибку клиенту
@@ -46,7 +46,7 @@ export class PostController {
     FileInterceptor('image', {
       storage: diskStorage({
         destination: (_, __, cb) => {
-          if (!fs.existsSync('uploads')) {
+          if (!fs.existsSync('uploads')) { 
             fs.mkdirSync('uploads');
           }
           cb(null, 'uploads');
@@ -87,6 +87,7 @@ export class PostController {
   }
 
   //Получение всех постов
+  // @UseGuards(JwtUserGuard)
   @Get()
   getPosts() {
     return this.postService.getPosts();
@@ -114,11 +115,12 @@ export class PostController {
     return this.postService.createPost(theme, content, authorId);
   }
 
-  ////Удаление поста
-  // @Delete('delete/:id')
-  // deletePost(@Param('id') id: string) {
-  //   return this.postService.deletePost(id);
-  // }
+  //Удаление поста
+  @UseGuards(JwtUserGuard)
+  @Delete('delete/:id')
+  deletePost(@Param('id') id: string) {
+    return this.postService.deletePost(id);
+  }
 
   ////Обновление поста
   // @Put('update/:id')

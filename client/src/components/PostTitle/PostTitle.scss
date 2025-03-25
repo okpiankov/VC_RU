@@ -14,9 +14,16 @@
   @media (max-width: 440px) {
     width: auto;
   }
-  .author {
+  .author_theme {
     display: flex;
     flex-direction: column;
+    .box_name {
+      display: flex;
+      .name {
+        width: 100px;
+      }
+    }
+    
     .theme {
       display: flex;
       align-items: center;
@@ -39,7 +46,7 @@
     //   font-size: 22px;
     // }
     @media (max-width: 440px) {
-      h2{
+      h2 {
         font-size: 22px;
       }
     }

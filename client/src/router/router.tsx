@@ -7,6 +7,13 @@ import { SearchPage } from "../pages/Search/SearchPage";
 import { Cabinet } from "../pages/Cabinet/Cabinet";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { Blog } from "../pages/Blog/Blog";
+import { Admin } from "../pages/Admin/Admin";
+import { EditUser } from "../pages/Admin/EditUser/EditUser";
+import { User } from "../pages/Admin/EditUser/User";
+import { EditPost } from "../pages/Admin/EditPost/EditPost";
+import { Home } from "../pages/Admin/Home/Home";
+import { EditComment } from "../pages/Admin/EditComment/EditComment";
+import { EditChat } from "../pages/Admin/EditChat/EditChat";
 // import { Cabinet } from "../pages/Cabinet/Cabinet";
 
 export const router = createBrowserRouter([
@@ -36,9 +43,11 @@ export const router = createBrowserRouter([
         path: "/blog/:id",
         element: <Blog />,
       },
+      //личный кабинет
       {
         path: "/cabinet",
         element: (
+          //защищенный роут
           <ProtectedRoute requiredRole="client">
             <Cabinet />
           </ProtectedRoute>
@@ -47,19 +56,40 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  //// отдельный layout для личного кабинета
-  // {
-  //   path: "/cabinet",
-  //   element: (
-  //     <ProtectedRoute requiredRole="client">
-  //       <Cabinet />
-  //     </ProtectedRoute>
-  //   ),
-    // children: [
-    //   {
-    //     index: true,
-    //     element: <СabinetPage />,
-    //   },
-    // ],
-  // },
+   // отдельный layout для админки
+  {
+    path: "/admin",
+    element: (
+      //защищенный роут
+      <ProtectedRoute requiredRole="admin">
+        <Admin />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/admin/editUser",
+        element: <EditUser />,
+      },
+      {
+        path: "/admin/editUser/:id",
+        element: <User/>,
+      },
+      {
+        path: "/admin/editPost",
+        element: <EditPost/>,
+      },
+      {
+        path: "/admin/editComment",
+        element: <EditComment/>,
+      },
+      {
+        path: "/admin/editChat",
+        element: <EditChat/>,
+      },
+    ],
+  },
 ]);

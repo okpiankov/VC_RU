@@ -50,8 +50,9 @@ export class CommentController {
   }
 
   //Удаление комментария
+  @UseGuards(JwtUserGuard)
   @Delete('delete/:id')
-  deletePost(@Param('id') id: string) {
+  deleteСomment(@Param('id') id: string) {
     return this.commentService.deleteСomment(id);
   }
 }

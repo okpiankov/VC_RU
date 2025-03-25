@@ -11,48 +11,61 @@ type TypePostTitle = {
   theme: string;
   content: string;
   comments: number;
-  authorId: string
+  authorId: string;
 };
 
-export const PostTitle = ({ id, author, theme, content, comments, authorId }: TypePostTitle) => {
-  
+export const PostTitle = ({
+  id,
+  author,
+  theme,
+  content,
+  comments,
+  authorId,
+}: TypePostTitle) => {
   //Парсинг HTML с тегами в React html-react-parser и безопасность от атак (XSS) dompurify
   const dirtyHTML = content;
   const cleanHTML = DOMPurify.sanitize(dirtyHTML, {
     USE_PROFILES: { html: true },
   });
 
-  const objectTheme = arrayTheme.find(
-      (item) => item.name === theme);
-    // console.log("objectTheme", objectTheme);
+  const objectTheme = arrayTheme.find((item) => item.name === theme);
+  // console.log("objectTheme", objectTheme);
 
   return (
-    <NavLink className="post_title" to={`/${id}`}>
-      <div className="author">
-      <NavLink to={`/blog/${authorId}`}><b className="name">{author}</b></NavLink>
+    <div className="post_title">
+      <div className="author_theme">
+        <div className="box_name">
+          <NavLink to={`/blog/${authorId}`}>
+            <b className="name">{author}</b>
+          </NavLink>
+          <div></div>
+        </div>
         <div className="theme">
           <img className="icon" src={objectTheme?.icon} />
           {theme}
         </div>
       </div>
-
-      {/* опасный метод парсинга html с тегами
+      <NavLink to={`/${id}`}>
+        {/* опасный метод парсинга html с тегами
       <div
         className="content"
         dangerouslySetInnerHTML={{ __html: content }}
       ></div> */}
 
-      <div className="content">{parse(cleanHTML.substring(0,500)+"...")}</div>
+        <div className="content">
+          {parse(cleanHTML.substring(0, 500) + "...")}
+        </div>
 
-      <div className="icon_panel">
-        <div>
-          <MessageCircle /> {comments}
+        <div className="icon_panel">
+          <div>
+            <MessageCircle /> {comments}
+          </div>
+          <div>
+            <Glasses /> 777
+          </div>
         </div>
-        <div>
-          <Glasses /> 777
-        </div>
-      </div>
-    </NavLink>
+      </NavLink>
+    </div>
   );
 };
 

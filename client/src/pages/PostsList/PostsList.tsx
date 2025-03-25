@@ -17,15 +17,17 @@ type TypePostsList = {
 };
 
 export const PostsList = () => {
+  
+  //Получение всех постов
   const getPosts = async () => {
     const result = await axios.get<TypePostsList[]>(
       `${import.meta.env.VITE_BASE_URL}/posts`
     );
     return result.data;
   };
-  //Получение всех постов
+  
   //useQuery() для получения данных, useMutation() для обновленния данных
-  //данные из useQuery получаются только через "data"
+  //данные из useQuery получаются только через "data" или обращение пременная.data
   //Запрос прописывается в queryFn через async, типы передаются так axios.get<TypePostsList[]>()
   const { data, error, isLoading, isSuccess } = useQuery({
     //по этому ключу будут храниться в кэше данные
@@ -53,28 +55,28 @@ export const PostsList = () => {
       },
     ],
   });
-  console.log(
-    "PostsList:",
-    data,
-    "error:",
-    error,
-    "isLoading:",
-    isLoading,
-    "isSuccess:",
-    isSuccess
-  );
+  // console.log(
+  //   "PostsList:",
+  //   data,
+  //   "error:",
+  //   error,
+  //   "isLoading:",
+  //   isLoading,
+  //   "isSuccess:",
+  //   isSuccess
+  // );
   return (
     <div className="posts_list">
       {isLoading ? <Skeleton1 /> : ""}
       {data?.map((item) => (
         <PostTitle
           key={item.id}
-          id={item.id}
-          theme={item.theme}
-          author={item.author.fullName}
-          content={item.content}
+          id={item?.id}
+          theme={item?.theme}
+          author={item?.author?.fullName}
+          content={item?.content}
           comments={item?.comments?.length}
-          authorId={item.authorId}
+          authorId={item?.authorId}
         />
       ))}
     </div>

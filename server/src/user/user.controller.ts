@@ -1,8 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
+  Param,
   Post,
+  Put,
   Res,
+  UseGuards,
   // Response,
   UsePipes,
   ValidationPipe,
@@ -10,11 +15,12 @@ import {
 import { UserService } from './user.service';
 import { AuthUserDto, CreateUserDto } from './user.dto';
 import { Response } from 'express'; //установить "@types/express"
+import { JwtUserGuard } from './jwt-user.guard';
 
 //Можно сделать отдельно контроллеры для: user, auth, role(тк роли хранятся в БД)
 //@UseGuards(AuthGuard('jwt'))-проверка токена через Guard или через декоратор @Auth('admin')
 
-@Controller('auth')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -60,6 +66,39 @@ export class UserController {
     //Прикрепляю к ответу куки
     response.cookie('cookieName2', token, options);
     return { fullName, id, email, role };
+  }
+
+  //Получение всех пользователей
+  @UseGuards(JwtUserGuard) //Проверка токена из Cookies через Guard
+  @Get()
+  getUsers() {
+    return this.userService.getUsers();
+  }
+
+  //Получение пользователя по его id
+  //Обязательно передаю ':id' в @Get
+  @UseGuards(JwtUserGuard) //Проверка токена из Cookies через Guard
+  @Get(':id')
+  getOneUser(@Param('id') id: string) {
+    return this.userService.getOneUser(id);
+  }
+
+  //Обновление пользователя
+  @UseGuards(JwtUserGuard) //Проверка токена из Cookies через Guard
+  @Put('update/:id')
+  updateUser(
+    @Body('email') email: string,
+    @Body('fullName') fullName: string,
+    @Param('id') id: string,
+  ) {
+    return this.userService.updateUser(id, email, fullName);
+  }
+
+  //Удаление пользователя
+  @UseGuards(JwtUserGuard) //Проверка токена из Cookies через Guard
+  @Delete('delete/:id')
+  deleteUser(@Param('id') id: string) {
+    return this.userService.deleteUser(id);
   }
 }
 

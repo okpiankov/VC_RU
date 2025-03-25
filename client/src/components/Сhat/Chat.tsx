@@ -95,15 +95,15 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
     socket.emit("message:post", payload);
   }, []);
 
-  // удаление всех сообщений
-  const remove = useCallback(() => {
-    socket.emit("messages:clear");
-    // получение сообщений
-    socket.on("messages", (messages: TypeMessageGet[]) => {
-      setMessages(messages);
-    });
-    socket.emit("messages:get");
-  }, []);
+  // // удаление всех сообщений
+  // const remove = useCallback(() => {
+  //   socket.emit("messages:clear");
+  //   // получение сообщений
+  //   socket.on("messages", (messages: TypeMessageGet[]) => {
+  //     setMessages(messages);
+  //   });
+  //   socket.emit("messages:get");
+  // }, []);
 
   // //отключение пользователя
   //  const close = useCallback(() => socket.on("disconnect", () => {
@@ -173,7 +173,7 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
             <Send className="button_icon" />
           </button>
         </form>
-        <Trash2 className="delete" onClick={() => remove()} />
+        {/* <Trash2 className="delete" onClick={() => remove()} /> */}
         <div className="container_message">
           {messages.length > 0 &&
             messages?.map((message) => (

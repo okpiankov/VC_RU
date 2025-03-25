@@ -79,6 +79,31 @@ export class UserService {
     return newUser;
   }
 
+  //Получение всех пользователей
+  getUsers(): Promise<User[]> {
+    return this.prisma.user.findMany();
+  }
+
+  //Получение пользователя по его id
+  getOneUser(id: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
+  //Обновление пользователя
+  updateUser(id: string, email: string, fullName: string) {
+    return this.prisma.user.update({
+      where: { id },
+      data: { email, fullName },
+    });
+  }
+
+  //Удаление пользователя
+  deleteUser(id: string) {
+    return this.prisma.user.delete({ where: { id } });
+  }
+
   // //Авторизация пользователя без валидации без dto
   // async login(email: string, password: string): Promise<any> {
   //   //Проверяю зарегистрирован ли пользователь

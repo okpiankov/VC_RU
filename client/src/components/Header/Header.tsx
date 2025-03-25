@@ -5,7 +5,7 @@ import {
   Pencil,
   Search,
   Redo2,
-  UserRound,
+  UserRound, 
   Menu,
   LogOut,
   Send,
@@ -66,7 +66,7 @@ export const Header = ({
           <div className="logo">
             VC<br></br>.RU
           </div>
-          {search && <SearchQuery /> ? (
+          {search && <SearchQuery />  ? (
             <SearchQuery />
           ) : (
             <Search

@@ -32,7 +32,7 @@ export class JwtUserGuard implements CanActivate {
         secret: 'secret123',
       });
       console.log('user', user);
-      console.log('request.user', request.user);
+      // console.log('request.user', request.user);
       //request.user = user;
       return true;
       //return validateRequest(request);

@@ -16,7 +16,7 @@ export class PostService {
   getPosts(): Promise<Post[]> {
     return this.prisma.post.findMany({
       include: {
-        author: { select: { fullName: true } },
+        author: { select: { fullName: true, email: true } },
         comments: {
           select: {
             id: true,
@@ -100,10 +100,10 @@ export class PostService {
     return this.prisma.post.create({ data: { theme, content, authorId } });
   }
 
-  // //Удаление поста
-  // deletePost(id: string) {
-  //   return this.prisma.post.delete({ where: { id } });
-  // }
+  //Удаление поста
+  deletePost(id: string) {
+    return this.prisma.post.delete({ where: { id } });
+  }
 
   // //Обновление поста
   // updatePost(id: string, theme: string, content: string) {

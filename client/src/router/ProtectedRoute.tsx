@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ children, requiredRole }: Props) => {
   const user = useSelector(getUser);
   // console.log(user);
 
-  if (!user || requiredRole !== user?.role) {
+  if (!user?.id && requiredRole !== user?.role) {
     return <Navigate to="/" replace />;
   }
   return children;
