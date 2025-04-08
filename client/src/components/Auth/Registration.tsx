@@ -3,6 +3,7 @@ import "./Registration.scss";
 import { validateEmail, validateName, validatePassword } from "./validate";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { RegistrationAdmin } from "./RegistrationAdmin";
 
 type TypeProps = {
   setPopUpLogin: (popUpLogin: boolean) => void;
@@ -46,6 +47,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
     Object.assign(formData, initialState);
   }
 
+  const [admin, setAdmin] = useState<boolean>(false);
   //Стейты  для валидации:
   const [nameError, setNameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
@@ -71,9 +73,7 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
     }
   };
 
-  // const validateForm = (validateName, validateEmail, validatePassword) => { {
 
-  // }
   const registration = async () => {
     const result = await axios.post<TypeUserGet>(
       `${import.meta.env.VITE_BASE_URL}/users/registration`,
@@ -161,7 +161,10 @@ export const Registration = ({ setPopUpLogin }: TypeProps) => {
         <button type="submit" className="button">
           Зарегистрироваться
         </button>
+        <div className="line" onClick={() => setAdmin(!admin)}></div>
+        {admin && <RegistrationAdmin />}
       </form>
+      
     </>
   );
 };

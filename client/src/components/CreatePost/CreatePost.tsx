@@ -5,6 +5,10 @@ import { X } from "lucide-react";
 import axios from "axios";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+// import ImageUploader from "ImageUploader";
+// import ImageUploader from "quill-image-uploader-ts";
+// import ImageUploader from "../../../node_modules/quill-image-uploader-ts/src/ImageUploader";
+// quill-image-uploader написан на js, а quill-image-uploader-ts больше не поддерживается
 import ImageUploader from "quill-image-uploader";
 import { useSelector } from "react-redux";
 import { getUser } from "../../store/user/slice";
@@ -55,7 +59,7 @@ const modules = {
         const formData = new FormData();
         formData.append("image", file);
 
-        fetch("http://localhost:7777/posts/uploads", {
+        fetch(`${import.meta.env.VITE_BASE_URL}/posts/uploads`, {
           method: "POST",
           body: formData,
         })

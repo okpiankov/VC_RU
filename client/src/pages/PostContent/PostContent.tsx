@@ -27,7 +27,7 @@ export const PostContent = () => {
 
   //   if (id === undefined) return;
   const getPost = async (id: string | undefined) => {
-    // const result = await axios.get("http://localhost:7777/posts");
+    // const result = await axios.get(`http://localhost:7777/posts/${id}`);
     const result = await axios.get<TypePostContent>(
       `${import.meta.env.VITE_BASE_URL}/posts/${id}`,
       {

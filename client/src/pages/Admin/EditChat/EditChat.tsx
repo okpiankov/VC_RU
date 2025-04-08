@@ -1,7 +1,7 @@
 import axios from "axios";
 import "./EditChat.scss";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Eye, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import dayjs from "dayjs";
 
 type TypeChatMessages = {

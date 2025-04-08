@@ -4,12 +4,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
+// import { PrismaService } from 'src/prisma.service';
 import { AuthUserDto, CreateUserDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
-import { response } from 'express';
 
 //prisma.user.findUnique  это методы призмы: findUnique,findMany, create, update...
 //user - название схемы(таблицы в БД)
@@ -39,8 +39,7 @@ export class UserService {
     if (user && isValidPass) {
       const token = this.jwtService.sign(
         { email: user.email, id: user.id },
-        //'secret123',
-        //process.env.JWT_KEY,
+        //process.env.JWT_KEY, здесь не нужен тк он указан в UserModule
       );
       const newUser = { ...user, token: token };
       return newUser;
@@ -72,8 +71,7 @@ export class UserService {
     });
     const token = this.jwtService.sign(
       { email: user.email, id: user.id },
-      //'secret123',
-      //process.env.JWT_KEY,
+      //process.env.JWT_KEY, здесь не нужен тк он указан в UserModule
     );
     const newUser = { ...user, token: token };
     return newUser;

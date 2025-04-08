@@ -35,7 +35,7 @@ export const Home = () => {
     queryKey: ["posts"],
     queryFn: getPosts,
   });
-  const { data, error, isLoading } = query;
+  const { data, isLoading } = query;
 
   const comments = data?.reduce((result, comment) => {
     return result + comment.comments.length;

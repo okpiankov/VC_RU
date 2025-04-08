@@ -1,0 +1,145 @@
+# 3 сервиса: client, server, postgres_db
+services:
+  client:
+    build:
+      # context: ../client/.
+      context: ./client/.
+      dockerfile: Dockerfile
+    env_file:
+      # - ../client/.env
+      - ./client/.env
+    ports:
+      - "5173:5173"
+    # command: npm run dev можно прописывать здесь
+    # чтобы изменять файлы и контейнер об этом знал и также изменил
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    depends_on:
+      - server
+    restart: always
+    # network_mode: host
+  server:
+    build:
+      # context: .
+      context: ./server/.
+      dockerfile: Dockerfile
+    ports:
+    # для сервера
+      - "7777:7777"
+    # для chat
+      - "5555:5555"
+    stdin_open: true
+    tty: true
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    env_file:
+      # - .env
+      - ./server/.env
+    networks:
+      - prisma-network
+    restart: always
+  postgres_db:
+    image: postgres:15
+    hostname: postgres_db
+    container_name: postgres_db
+    env_file:
+      - ./server/.env
+    # если не обращаться к .env то можно прописывать все переменные в environment:
+    environment:
+      # POSTGRES_DB: postgres_vc_ru
+      # POSTGRES_USER: postgres
+      # POSTGRES_PASSWORD: prisma
+      # из документации необходимо указать
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      # чтобы данные не терялись в БД
+      - pgdata:/var/lib/postgresql/data
+    # PostgreSQL будет прослушиваться с любых IP-адресов
+    command: postgres -c listen_addresses='*'
+    ports:
+    # 1 - порт хоста, 2 - порт внутри контейнера
+      - "5433:5432"
+    networks:
+      # имя сети м/б любым
+      - prisma-network
+    # проверка работоспособности контейнера с базой данных PostgreSQL
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d postgres']
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    restart: always
+networks:
+  prisma-network:
+    name: prisma-network
+volumes:
+  pgdata:
+
+# Необходимо установить Docker Desktop на машину, создать 2 DockerFile( у меня для server и client), .dockerignore и docker-compose.yml
+# Важно! строго соблюдать все отступы по горизонтали и вертикали, между сервисами нет отступов
+# image: - образ Docker, который будет использоваться для контейнера
+# build: — контекст для сборки образа из Dockerfile, если не нужно тянуть образ из реестра DockerHub
+# volumes — монтирует тома в контейнер для постоянного хранения данных
+# environment — устанавливает переменные среды внутри контейнера, для БД postgresql можно вынести  все переменные  в .env
+# Собирать и запускать отдельно образ из DockerFile не нужно все делается через docker-compose.yml
+# если не настроено, то пробрасываю порт 5173 контейнера на порт 5173 хоста тк все контейнеры изолированы и их не видно в браузере
+# docker run -d -p 5173:5173 IMAGE(например у меня "server-client"), так делаю со всеми сервисами
+# можно указать несколько портов для разных служб в сервисе у меня в server для сервера - "7777:7777", для чата - "5555:5555"
+# ВАЖНО!!! чтобы приложение стало доступно на  http://localhost:5173  если сборщик vite, нужно добавить настройки:
+# на клиенте в package.json "dev": "vite --host", и в vite.config.ts  server: {host: true,}, в DockerFile CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+# ВАЖНО!!! в DATABASE_URL="postgresql://postgres:prisma@postgres_db:5432/postgres_vc_ru?schema=public или .env после @ указать:
+# имя сервиса БД у меня - postgres_db, а не localhost иначе ошибка Ошибка P1001: Can't reach database server at localhost:5433
+# м/б ошибка возникать если есть ранее установленный экземпляр PostgreSQL, нужно удалить в Docker Desktop valumes и пересобрать
+# при создании server в pgadmin для подключения к БД( в контейнере) необходимо указать hostname/address 0.0.0.0 и все данные из .env/environment:
+
+# ulbitv: docker-compose build - собираю все image, docker-compose up - запускаю контейнеры на основе этих образов
+# БД postgresql соберется и запустится только после команды docker-compose up
+# docker-compose stop - останавливаю все запущенные контейнеры, docker-compose start - запускаю только которые остановлены!
+# docker-compose down - удаляет контейнеры и тома(данные в БД), docker-compose up - создает контейнеры после удаления
+# docker-compose ps -a - какие контейнеры запущены
+# Пересобираю сервис: docker-compose up --build "имя сервиса" если внесены изменения в DockerFile или docker-compose.yml процедура быстрая
+
+# После запуска контейнеров делаю миграцию в БД: записываю схемы, но команды нужно вводить внутри контейнера server поэтому:
+# либо в DockerFile прописываю эти команды например в CMD или через команду exec запускаю миграцию и generate прямо в контейнере
+# docker-compose exec server npx prisma migrate dev --name add_DB_postgres_vc_ru  и docker-compose exec server npx prisma generate
+# При остановке и запуске postgres_db почему то опять требует миграцию и generate как буд то все затирается в БД?
+
+# version: '3.7' уже не нужно указывать
+
+# ulbitv: 
+# version: '3.0'
+
+# services:
+#   main:
+#     container_name: main
+#     build:
+#       context: .
+#     env_file:
+#       - .development.env
+#     volumes:
+#       - .:/app
+#       - /app/node_modules
+#     ports:
+#       - 5000:5000
+#       - 9229:9229
+#     command: npm run start:dev
+#     depends_on:
+#       - postgres
+#     restart: always
+#   postgres:
+#     container_name: postgres
+#     image: postgres:12
+#     env_file:
+#       - .development.env
+#     environment:
+#       PG_DATA: /var/lib/postgresql/data
+#     ports:
+#       - 5432:5432
+#     volumes:
+#       - pgdata:/var/lib/postgresql/data
+#     restart: always
+# volumes:
+#   pgdata:
+

@@ -57,7 +57,6 @@ export const Comments = ({ postId }: TypePostId) => {
 
   //Получение всех комментариев относящихся к определенному посту
   const getComments = async (postId: string | undefined) => {
-    // const result = await axios.get<TypeCommentGet[]>("http://localhost:7777/posts");
     const result = await axios.get<TypeCommentGet[]>(
       `${import.meta.env.VITE_BASE_URL}/comments/${postId}`
     );

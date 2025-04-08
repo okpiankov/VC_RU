@@ -1,7 +1,24 @@
 {
   "files": [],
+  // //для тестов jest 
+  // "compilerOptions": {
+  //   // "target": "es5",
+  //   "jsx": "react-jsx",
+  //   "module": "es2022",
+  //   "moduleResolution": "Node",
+  //   "target": "es2020",
+  //   "allowJs": true,
+  //   "allowSyntheticDefaultImports": true,
+  //   "strict": true, 
+  //   "baseUrl": "src",
+  //   "types": [
+  //     "jest"
+  //   ],
+  //   "esModuleInterop": true,
+  // },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ]
+  
 }

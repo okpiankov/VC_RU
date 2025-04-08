@@ -35,6 +35,7 @@ export const Header = ({
   const user = useSelector(getUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   //Функция выхода из авторизации
   const handleLogout = () => {
     dispatch(userActions.clearUserStore());

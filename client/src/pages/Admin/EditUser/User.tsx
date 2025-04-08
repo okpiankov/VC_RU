@@ -44,7 +44,7 @@ export const User = () => {
     return result.data;
   };
 
-  const { data, error, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["getUser", id],
     //queryFn: (id не нужно прокидывать здесь) => getPost(id),
     queryFn: () => getUser(id),

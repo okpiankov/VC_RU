@@ -1,6 +1,7 @@
 // import { AppController } from './app.controller';
 // import { AppService } from './app.service';
 // import { LoggerMiddleware } from './conception/middleware';
+// import { WebsocketGateway } from './websocket.gateway';
 import { Module } from '@nestjs/common';
 import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
@@ -8,7 +9,6 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CommentModule } from './comment/comment.module';
-// import { WebsocketGateway } from './websocket.gateway';
 import { ChatModule } from './chat/chat.module';
 
 //Модули группируют связанные элементы, это корневая история

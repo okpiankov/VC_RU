@@ -8,11 +8,11 @@ import {
   useState,
 } from "react";
 import "./Chat.scss";
-import { Send, Trash2, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useSelector } from "react-redux";
 import { getUser } from "../../store/user/slice";
-import { io, Socket } from "Socket.IO-client";
-// import { io, Socket } from "Socket.io-client";
+// import { io, Socket } from "Socket.IO-client";
+import { io, Socket } from "socket.io-client";
 import dayjs from "dayjs";
 // import { Message, Prisma } from "@prisma/client";
 
@@ -44,7 +44,7 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
   // useEffect(() => {
   //важно: один пользователь - один сокет
   if (!socket) {
-    socket = io("http://localhost:5555/chat", {
+    socket = io(`${import.meta.env.VITE_CHAT_URL}/chat`, { 
       query: {
         userName: user.fullName,
       },

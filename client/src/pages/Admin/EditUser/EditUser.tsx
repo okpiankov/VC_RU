@@ -24,7 +24,7 @@ export const EditUser = () => {
     );
     return result.data;
   };
-  const { data, error, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     //по этому ключу будут храниться в кэше данные
     queryKey: ["getUsers"],
     queryFn: getUsers,

@@ -12,11 +12,12 @@ import { Server, Socket } from 'socket.io';
 // import { MessageUpdatePayload } from "types";
 // import { AppService } from './app.service';
 import { ChatService } from './chat.service';
-import { Get } from '@nestjs/common';
 
 // type MessageUpdatePayload = Prisma.MessageWhereUniqueInput &
 //   Pick<Prisma.MessageUpdateInput, 'text'>;
 const users: Record<string, string> = {};
+
+// const port = process.env.CHAT_PORT;
 
 //Чат на отдельном порту 5555 от основного приложения 7777
 @WebSocketGateway(5555, {

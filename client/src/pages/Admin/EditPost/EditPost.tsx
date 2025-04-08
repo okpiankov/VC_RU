@@ -18,6 +18,7 @@ type TypePostsList = {
   createdAt: string;
 };
 
+
 export const EditPost = () => {
   //Получение всех постов
   const getPosts = async () => {
@@ -31,7 +32,7 @@ export const EditPost = () => {
     queryKey: ["posts"],
     queryFn: getPosts,
   });
-  const { data, error, isLoading } = query;
+  const { data, isLoading } = query;
 
   //Запрос на удаление поста
   const deletePost = async (id: string) => {

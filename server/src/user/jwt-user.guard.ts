@@ -29,7 +29,7 @@ export class JwtUserGuard implements CanActivate {
       console.log('Cookies:', request?.cookies?.cookieName1);
 
       const user = this.jwtService.verify<{ token: string }>(token, {
-        secret: 'secret123',
+        secret: process.env.JWT_KEY,
       });
       console.log('user', user);
       // console.log('request.user', request.user);

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Message, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
+// import { PrismaService } from 'src/prisma.service';
 
 // type MessageUpdatePayload = Prisma.MessageWhereUniqueInput &
 //   Pick<Prisma.MessageUpdateInput, 'text'>;

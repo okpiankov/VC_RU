@@ -69,7 +69,7 @@ export class UserController {
   }
 
   //Получение всех пользователей
-  @UseGuards(JwtUserGuard) //Проверка токена из Cookies через Guard
+  // @UseGuards(JwtUserGuard) //Проверка токена из Cookies через Guard
   @Get()
   getUsers() {
     return this.userService.getUsers();

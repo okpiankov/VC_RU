@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Post, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { Post } from '@prisma/client';
+import { PrismaService } from '../prisma.service';
+// import { PrismaService } from 'src/prisma.service';
 
 //@Injectable - чтобы класс можно было переиспользовать в контроллере
 //Сервисы выполняют бизнесс-логику и взаимодействуют с БД

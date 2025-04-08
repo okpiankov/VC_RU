@@ -28,7 +28,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "admin@test.com",
+    email: "user@test.com",
     password: "123",
   });
   //Стейты  для валидации:

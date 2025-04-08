@@ -1,4 +1,3 @@
-////Пример от red group
 // import {
 //   MessageBody,
 //   OnGatewayConnection,
@@ -38,3 +37,4 @@
 //   }
 //
 // }
+//red group

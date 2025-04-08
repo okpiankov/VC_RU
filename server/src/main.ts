@@ -9,10 +9,10 @@ async function bootstrap() {
   app.use(cookieParser());
   // app.useGlobalPipes(new ValidationPipe());
   app.enableCors({ origin: true, credentials: true });
-  await app.listen(7777);
-  // await app.listen(process.env.PORT ?? 7777);
+  await app.listen(process.env.PORT ?? 7777);
 }
 void bootstrap();
+
 //В корневом файле настроивается cors и cookies можно глобальный путь указать:
 //app.setGlobalPrefix('api')
 //nodemon для nestjs не нужен из коробки запуск сервера командой npm run start:dev

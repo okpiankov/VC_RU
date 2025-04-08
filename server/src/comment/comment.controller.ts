@@ -9,7 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { JwtUserGuard } from 'src/user/jwt-user.guard';
+import { JwtUserGuard } from '../user/jwt-user.guard';
+// import { JwtUserGuard } from 'src/user/jwt-user.guard';
 
 @Controller('comments')
 export class CommentController {
