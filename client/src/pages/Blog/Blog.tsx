@@ -125,7 +125,7 @@ export const Blog = () => {
       {!post && (
         <div className="commentsBox">
           {comments?.isLoading ? <Skeleton2 /> : ""}
-          {comments?.data && comments?.data?.length > 0 ? (
+          {comments?.data && comments?.data?.length > 0 ? (  
             comments.data?.map((comment) => (
               <div key={comment.id} className="comment">
                 <div className="comment_title">

@@ -4,7 +4,7 @@ import "./CreatePost.scss";
 import { X } from "lucide-react";
 import axios from "axios";
 import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.snow.css"; 
 // import ImageUploader from "ImageUploader";
 // import ImageUploader from "quill-image-uploader-ts";
 // import ImageUploader from "../../../node_modules/quill-image-uploader-ts/src/ImageUploader";

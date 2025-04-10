@@ -160,7 +160,7 @@ export const Chat = ({ setDrawerChat }: TypeProps) => {
             setDrawerChat(false);
           }}
         />
-        <form className="form_chat" onSubmit={handleSubmit}>
+        <form className="form_chat" onSubmit={handleSubmit}> 
           <textarea
             onChange={handleChange}
             value={formData.text}

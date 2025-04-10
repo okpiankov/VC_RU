@@ -45,7 +45,7 @@ export const PostTitle = ({
           {theme}
         </div>
       </div>
-      <NavLink to={`/${id}`}>
+      <NavLink to={`/${id}`} className="navlink_post">
         {/* опасный метод парсинга html с тегами
       <div
         className="content"
@@ -53,7 +53,7 @@ export const PostTitle = ({
       ></div> */}
 
         <div className="content">
-          {parse(cleanHTML.substring(0, 500) + "...")}
+          {parse(cleanHTML.substring(0, 500) + "...")} 
         </div>
 
         <div className="icon_panel">

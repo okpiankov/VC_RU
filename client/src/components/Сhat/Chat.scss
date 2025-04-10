@@ -17,8 +17,8 @@
   top: 100px;
   cursor: pointer;
   @media (max-width: 440px) {
-    right: 350px;
-    top: 90px;
+    right: 300px;
+    top: 110px;
   }
   &:hover {
     color: red;
@@ -39,7 +39,7 @@
   padding: 20px;
   gap: 10px;
   @media (max-width: 440px) {
-    width: 350px;
+    width: 330px;
     padding: 10px;
     bottom: 50px;
   }
@@ -50,7 +50,7 @@
     align-items: center;
     width: 550px;
     @media (max-width: 440px) {
-      max-width: 370px;
+      max-width: 350px;
       // margin-top: 50px;
     }
 
@@ -118,7 +118,7 @@
     z-index: 1;
     padding-bottom: 50px;
     @media (max-width: 440px) {
-      max-width: 480px;
+      max-width: 440px;
       height: 75vh;
     }
     &::-webkit-scrollbar {
@@ -154,7 +154,7 @@
       gap: 10px;
       margin-top: 15px;
       @media (max-width: 440px) {
-        width: 290px;
+        width: 250px;
       }
 
       .message_title {
@@ -181,8 +181,8 @@
       margin-left: 95px;
       margin-top: 15px;
       @media (max-width: 440px) {
-        width: 290px;
-        margin-left: 25px;
+        width: 250px;
+        margin-left: 45px;
       }
 
       .message_title {
@@ -223,7 +223,7 @@
     color: red;
   }
   @media (max-width: 440px) {
-    right: 350px;
+    right: 310px;
   
   }
 }

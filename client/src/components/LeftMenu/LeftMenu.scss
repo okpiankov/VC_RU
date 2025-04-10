@@ -34,6 +34,8 @@
     height: 50px;
     border-radius: 15px;
     padding-left: 7px;
+    color: inherit;
+    text-decoration: none;
 
     &:hover,
     &:active {
@@ -44,7 +46,7 @@
   .themes {
     padding-left: 7px;
   }
-  .img {
+  .img_desktop {
     height: 34px;
     width: 34px;
     border-radius: 17px;

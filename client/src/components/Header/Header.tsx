@@ -127,7 +127,7 @@ export const Header = ({
           )}
           {user.role === "client" && (
             <div className="user" onClick={() => navigate("/cabinet")}>
-              <img src="/dog.png" className="img" />
+              <img src="/dog.png" className="img_login" />
               {/* П */}
             </div>
           )}
@@ -172,7 +172,7 @@ export const Header = ({
         )}
         {user.role === "client" && (
           <div className="user" onClick={() => navigate("/cabinet")}>
-            <img src="/dog.png" className="img" />
+            <img src="/dog.png" className="img_login_phone" />
             {/* П */}
           </div>
         )}
