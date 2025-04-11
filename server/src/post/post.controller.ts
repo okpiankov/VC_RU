@@ -59,7 +59,7 @@ export class PostController {
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
-    return { url: `http://localhost:7777/uploads/${file.originalname}` };
+    return { url: `${process.env.NEST_URL_HOST}/uploads/${file.originalname}` };
   }
 
   //ВАЖНО!!! чтобы функционал из Service из одной функции-контроллера не перекрывал функционал в другой Ф-К

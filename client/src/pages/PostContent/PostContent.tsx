@@ -61,7 +61,7 @@ export const PostContent = () => {
         {/* <div className="name">{post.author}</div> */}
 
         <div className="author">
-          <NavLink to={`/blog/${data?.author?.id}`}>
+          <NavLink to={`/blog/${data?.author?.id}`} className="navLink_author">
             <b className="name">{data?.author?.fullName}</b>
           </NavLink>
           <div className="theme">

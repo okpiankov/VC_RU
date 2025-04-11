@@ -98,7 +98,7 @@ export const Auth = ({ setPopUpLogin, setAuth }: TypeProps) => {
         }}
       ></div>
       {isError && <div className="reg">{err.response.data.message}</div>}
-      {isPending === true && <div className="loading">Загрузка...</div>}
+      {isPending === true && <div className="loading_auth">Загрузка...</div>}
       <div className="welcome showWelcome">
         Админка:<br></br> 
         логин: admin@test.com<br></br>

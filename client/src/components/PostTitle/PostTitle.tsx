@@ -35,8 +35,8 @@ export const PostTitle = ({
     <div className="post_title">
       <div className="author_theme">
         <div className="box_name">
-          <NavLink to={`/blog/${authorId}`}>
-            <b className="name">{author}</b>
+          <NavLink to={`/blog/${authorId}`} className="navLink_author">
+            <b className="name">{author}</b> 
           </NavLink>
           <div></div>
         </div>

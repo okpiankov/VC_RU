@@ -47,7 +47,7 @@
     width: 100px;
     cursor: pointer;
   }
-  .select_theme {
+  .select_theme { 
     width: 200px;
     height: 30px;
     // border: 1px solid black;
@@ -57,7 +57,9 @@
     padding-left: 17px;
     // position: absolute;
     // top: 80px;
-
+    // @media (max-width: 440px) {
+    //   font-size: 16px;
+    // }
     &:focus {
       outline: none;
     }

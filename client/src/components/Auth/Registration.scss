@@ -113,6 +113,18 @@
   }
   to {
     top: 120px;
+    
+  }
+}
+@media (max-width: 440px) {
+  @keyframes showTop {
+    from {
+      top: -100%;
+    }
+    to {
+      top: 30px;
+     
+    }
   }
 }
 .reg2 {

@@ -8,6 +8,11 @@
   gap: 20px;
   padding-top: 20px;
   padding-bottom: 20px;
+  @media (max-width: 440px) {
+    padding-top: 10px;
+    padding-bottom: 60px;
+  }
+}
 
 //   .post_theme {
 //     width: 640px;
@@ -59,4 +64,4 @@
 //       }
 //     }
 //   }
-}
+

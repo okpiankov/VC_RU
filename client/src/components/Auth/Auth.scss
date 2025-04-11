@@ -1,4 +1,4 @@
-.loading {
+.loading_auth {
   font-size: 27px;
   position: fixed;
   z-index: 50;
@@ -7,6 +7,9 @@
   color: white;
   text-align: center;
   margin-top: 70px;
+  @media (max-width: 440px) {
+    margin-top: 350px;
+  }
 }
 .form {
   min-height: 245px;
@@ -99,6 +102,18 @@
   }
   to {
     top: 120px;
+   
+  }
+}
+@media (max-width: 440px) {
+  @keyframes showTop {
+    from {
+      top: 100%;
+    }
+    to {
+      top: 30px;
+     
+    }
   }
 }
 .welcome {

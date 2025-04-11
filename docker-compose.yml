@@ -103,7 +103,7 @@ volumes:
 
 # После запуска контейнеров делаю миграцию в БД: записываю схемы, но команды нужно вводить внутри контейнера server поэтому:
 # либо в DockerFile прописываю эти команды например в CMD или через команду exec запускаю миграцию и generate прямо в контейнере
-# docker-compose exec server nууpx prisma migrate dev --name add_DB_postgres_vc_ru  и docker-compose exec server npx prisma generate
+# ge_postgres_vc_ru  и docker-compose exec server npx prisma generate
 # При остановке и запуске postgres_db почему то опять требует миграцию и generate как буд то все затирается в БД?
 
 # version: '3.7' уже не нужно указывать

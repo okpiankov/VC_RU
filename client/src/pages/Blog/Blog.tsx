@@ -132,7 +132,7 @@ export const Blog = () => {
                   <div className="comment_author2">
                     <b>{comment.author.fullName}</b> в посте:
                   </div>
-                  <NavLink className="navLink" to={`/${comment.post.id}`}>
+                  <NavLink className="navLink_blog" to={`/${comment.post.id}`}>
                     <div className="comment_content">
                     {parse(
                         DOMPurify.sanitize(

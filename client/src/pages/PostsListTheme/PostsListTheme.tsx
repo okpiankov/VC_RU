@@ -116,7 +116,7 @@ export const PostsListTheme = () => {
       <div className="post_theme">
         <div className={`${objectTheme?.background}`}></div>
 
-        <div className="theme">
+        <div className="theme_description">
           <img className="icon" src={objectTheme?.icon} />
           <div className="name">{objectTheme?.name}</div>
           <div className="title">{objectTheme?.description}</div>
@@ -131,7 +131,7 @@ export const PostsListTheme = () => {
             theme={item.theme}
             author={item.author.fullName}
             content={item.content}
-            comments={item?.comments?.length}
+            comments={item?.comments?.length} 
             authorId={item.authorId}
           />
         ))

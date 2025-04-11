@@ -14,6 +14,7 @@
 
   .post_theme {
     width: 640px;
+    //всегда не меньше 260px но раширение от содеримого кт в .theme_description  {min-height: fit-content;}
     min-height: 260px;
     background-color: white;
     // border: 1px solid black;
@@ -86,9 +87,10 @@
       border-top-left-radius: 15px;
     }
 
-    .theme {
+    .theme_description {
       width: 640px;
-      height: 160px;
+      //div расширяется в зависимости от содержимого
+      min-height: fit-content;
       display: flex;
       flex-direction: column;
       justify-content: start;
@@ -100,6 +102,7 @@
       }
       @media (max-width: 440px) {
         width: auto;
+        min-height: fit-content;
       }
       .name {
         font-size: 22px;
@@ -118,5 +121,8 @@
   }
   .no_post {
     font-size: 20px;
+    @media (max-width: 440px) {
+      font-size: 18px;
+    }
   }
 }

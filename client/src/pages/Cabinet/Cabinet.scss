@@ -10,6 +10,8 @@
   padding-bottom: 20px;
   @media (max-width: 440px) {
     width: auto;
+    padding-top: 10px;
+    padding-bottom: 60px;
   }
 
   .cabinet_header {
@@ -130,9 +132,12 @@
           font-size: 17px;
           color: black;
         }
-        .comment_content2 {
-          color: rgb(101, 101, 255);
-          cursor: pointer;
+        .navLink_comment {
+          text-decoration: none;
+          .comment_content2 {
+            color: rgb(101, 101, 255);
+            cursor: pointer;
+          }
         }
       }
     }

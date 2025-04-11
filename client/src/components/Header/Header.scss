@@ -115,14 +115,14 @@
 .header_phone {
   display: none;
   pointer-events: none;
-
+  
   @media (max-width: 440px) {
     pointer-events: auto; //сделал активные кнопки
     height: 50px;
     width: 100%;
     position: fixed;
     bottom: 0;
-    z-index: 10;
+    z-index: 30;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -134,10 +134,11 @@
   .vcru {
     position: fixed;
     top: 10px;
-    left: 10px;
-    color: rgb(255, 79, 109);
-    font-weight: 600;
-    color: inherit;
+    right: 10px;
+    color: rgb(70, 77, 255);
+    // color: rgb(35, 185, 35);
+    font-weight: 700;
+    // color: inherit;
     text-decoration: none;
   }
   .user {
